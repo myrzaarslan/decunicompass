@@ -1,0 +1,10 @@
+{% extends "unicompass_app/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="card">
+    <div class="card-body text-center">
+        {{ uni_info|safe }}
+    </div>
+</div>
+{% endblock %}
