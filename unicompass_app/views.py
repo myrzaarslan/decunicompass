@@ -5,13 +5,15 @@ from django.shortcuts import render
 from django.urls import reverse
 import json
 from django.core.paginator import Paginator
-
 from .genaicode.genai_university import get_university_info
 from .models import *
 
 # Create your views here.
 def index(request):
     return render(request, "unicompass_app/index.html")
+
+def exp(request):
+    return render(request, "unicompass_app/nindex.html")
 
 def qs_universities_list(request):
     # Get parameters from the URL
