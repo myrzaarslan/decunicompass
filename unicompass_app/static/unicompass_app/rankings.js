@@ -3,32 +3,8 @@
 let currentSource = 'topuniversities';
 let currentData = [];
 
-const subjectMap = {
-    "qs-general": '3897789',
-    "qs-engineering-technologies": '3948167',
-    "qs-arts-humanities": '3948166',
-    "qs-life-sciences-medicine": '3948168',
-    "qs-natural-sciences": '3948169',
-    "qs-social-sciences-management": '3948170',
-    "qs-linguistics": '3948214',
-    "qs-music": '3948226',
-    "qs-theology-divinity-religious": '3948201',
-    "qs-archaeology": '3948175',
-    "qs-architecture-built-environment": '3948176',
-    "qs-art-design": '3948177',
-    "qs-classics-ancient-history": '3948181',
-    "qs-english-language-literature": '3948194',
-    "qs-history": '3948202',
-    "qs-history-of-art": '3948220',
-    "qs-modern-languages": '3948219',
-    "qs-performing-arts": '3948215',
-    "qs-philosophy": '3948211',
-    "the-general": 'general'
-};
-
-async function getEntriesTopUniversities(subject = 'qs-general') {
-    const subjectId = subjectMap[subject];
-    const url = `/api/qs_universities/?items_per_page=1000`; // Fetch all items
+async function getEntriesTopUniversities(subject) {
+    const url = `/api/qs_universities/?subject=${subject}&items_per_page=1000`; // Fetch all items
 
     try {
         const response = await fetch(url);
@@ -47,8 +23,8 @@ async function getEntriesTopUniversities(subject = 'qs-general') {
     }
 }
 
-async function getEntriesTimesHigherEducation(subjectname = 'general') {
-    const url = `/api/the_universities/?items_per_page=1000`; // Fetch all items
+async function getEntriesTimesHigherEducation(subject) {
+    const url = `/api/the_universities/?subject=${subject}&items_per_page=1000`; // Fetch all items
 
     try {
         const response = await fetch(url);
@@ -181,7 +157,7 @@ function redirectToUniversityPage(uni) {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-    const element = document.querySelector('[data-subject="qs-general"]');
+    const element = document.querySelector('[data-subject="qs_rank"]');
     if (element) {
         try {
             await displayEntries(element);
@@ -189,6 +165,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.error('Error displaying initial entries:', error);
         }
     } else {
-        console.error('No element found with data-subject="qs-general"');
+        console.error('No element found with data-subject="qs_rank"');
     }
 });
