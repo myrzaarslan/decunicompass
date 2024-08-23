@@ -17,11 +17,30 @@ def exp(request):
 
 def qs_universities_list(request):
     # Get parameters from the URL
+    subject_name = request.GET.get('subject', 'general')  # Default to 'general' if no subject is provided
     page = int(request.GET.get('page', 0))
     items_per_page = int(request.GET.get('items_per_page', 10))
-    
-    # Fetch QS universities
-    universities = QS_University.objects.all()
+
+    # List of all valid subject fields in the QS_University model
+    valid_subject_fields = [
+        'rank_arts_humanities', 'rank_arts', 'rank_linguistics', 'rank_music', 'rank_theology',
+        'rank_archaeology', 'rank_architecture', 'rank_art_design', 'rank_classics', 'rank_english',
+        'rank_history', 'rank_art_history', 'rank_modern_languages', 'rank_performing_arts', 
+        'rank_philosophy', 'rank_eng_tech', 'rank_chem_eng', 'rank_civil_eng', 'rank_comp_sci', 
+        'rank_data_sci', 'rank_elec_eng', 'rank_pet_eng', 'rank_mech_eng', 'rank_mining_eng', 
+        'rank_nat_sci', 'rank_chemistry', 'rank_earth_marine_sci', 'rank_env_sci', 'rank_geography', 
+        'rank_geology', 'rank_geophysics', 'rank_materials_sci', 'rank_math', 'rank_physics_astronomy', 
+        'rank_life_sci', 'rank_agriculture', 'rank_anatomy', 'rank_bio_sci', 'rank_dentistry', 
+        'rank_medicine', 'rank_pharmacy', 'rank_nursing', 'rank_psychology', 'rank_vet_sci'
+    ]
+
+    # Validate the subject_name and filter universities
+    if subject_name in valid_subject_fields:
+        # Filter universities that have a ranking for the specified subject
+        universities = QS_University.objects.filter(**{subject_name + '__isnull': False}).order_by(subject_name)
+    else:
+        # Default to all universities if subject is 'general' or invalid
+        universities = QS_University.objects.all().order_by('qs_rank')
 
     # Pagination
     total_records = universities.count()
@@ -29,7 +48,7 @@ def qs_universities_list(request):
     universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
 
     # Prepare the response data
-    data = list(universities.values('id', 'rank', 'title', 'overall_score', 'city', 'country'))
+    data = list(universities.values('id', 'qs_rank', 'title', 'overall_score', 'city', 'country'))
 
     response = {
         "current_page": page + 1,
@@ -38,18 +57,18 @@ def qs_universities_list(request):
         "total_records": total_records,
         "data": data
     }
-    
+
     return JsonResponse(response)
 
 def the_universities_list(request):
     # Get parameters from the URL
-    subject_name = request.GET.get('subjectname', 'general')
+    subject_name = request.GET.get('subject', 'general')  # Default to 'general' if no subject is provided
     page = int(request.GET.get('page', 0))
     items_per_page = int(request.GET.get('items_per_page', 10))
-    
-    # Filter universities based on subjectname (if applicable)
+
+    # Filter universities based on the subject
     if subject_name != 'general':
-        universities = THE_University.objects.filter(subjects_offered__icontains=subject_name)
+        universities = THE_University.objects.filter(**{subject_name + '__isnull': False}).order_by(subject_name)
     else:
         universities = THE_University.objects.all()
 
@@ -59,7 +78,7 @@ def the_universities_list(request):
     universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
 
     # Prepare the response data
-    data = list(universities.values('id', 'rank', 'name', 'scores_overall', 'nid', 'location', 'subjects_offered'))
+    data = list(universities.values('id', 'the_rank', 'name', 'scores_overall', 'nid', 'location', 'subjects_offered'))
 
     response = {
         "current_page": page + 1,
@@ -68,7 +87,7 @@ def the_universities_list(request):
         "total_records": total_records,
         "data": data
     }
-    
+
     return JsonResponse(response)
 
 def university(request, uni):

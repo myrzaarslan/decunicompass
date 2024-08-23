@@ -1,8 +1,7 @@
-//TODO add other subjects, fix query unipage, fix alert
-
 let currentSource = 'topuniversities';
 let currentData = [];
 
+<<<<<<< HEAD:unicompass_app/static/unicompass_app/rankinglisting.js
 const subjectMap = { // ID for every subject
     "qs-general": '3897789',
     "qs-engineering-technologies": '3948167',
@@ -29,6 +28,10 @@ const subjectMap = { // ID for every subject
 async function getEntriesTopUniversities(subject = 'qs-general') { // Swith to qs ranking
     const subjectId = subjectMap[subject];
     const url = `/api/qs_universities/?items_per_page=1000`; // Fetch all items
+=======
+async function getEntriesTopUniversities(subject) {
+    const url = `/api/qs_universities/?subject=${subject}&items_per_page=1000`; // Fetch all items
+>>>>>>> 00f9645daa43b592d3d272de6fc502267ed9b07f:unicompass_app/static/unicompass_app/ranking.js
 
     try {
         const response = await fetch(url);
@@ -47,8 +50,13 @@ async function getEntriesTopUniversities(subject = 'qs-general') { // Swith to q
     }
 }
 
+<<<<<<< HEAD:unicompass_app/static/unicompass_app/rankinglisting.js
 async function getEntriesTimesHigherEducation(subjectname = 'general') { // Switch to THE ranking
     const url = `/api/the_universities/?items_per_page=1000`; // Fetch all items
+=======
+async function getEntriesTimesHigherEducation(subject) {
+    const url = `/api/the_universities/?subject=${subject}&items_per_page=1000`; // Fetch all items
+>>>>>>> 00f9645daa43b592d3d272de6fc502267ed9b07f:unicompass_app/static/unicompass_app/ranking.js
 
     try {
         const response = await fetch(url);
@@ -106,6 +114,7 @@ function displayEntriesList() {
         const row = document.createElement('div');
         row.className = "custom-rectangle3";
         row.innerHTML = `
+<<<<<<< HEAD:unicompass_app/static/unicompass_app/rankinglisting.js
             <table class="pizda">
                 <thead>
                     <tr>
@@ -119,6 +128,18 @@ function displayEntriesList() {
             </table>
         `;
         body.appendChild(row);
+=======
+            <td>${r}</td>
+            <td>${entry.name}
+                <div class="details-button-container">
+                    <button class="btn btn-info" onclick="redirectToUniversityPage('${entry.name}')">Details</button>
+                </div>
+            </td>
+            <td>${entry.rank}</td>
+            <td>${entry.overall_score}</td>`
+        ;
+        tbody.appendChild(row);
+>>>>>>> 00f9645daa43b592d3d272de6fc502267ed9b07f:unicompass_app/static/unicompass_app/ranking.js
     });
 }
 
@@ -153,8 +174,8 @@ async function instantSearch() {
                     </div>
                 </td>
                 <td>${entry.rank}</td>
-                <td>${entry.overall_score}</td>
-            `;
+                <td>${entry.overall_score}</td>`
+            ;
             tbody.appendChild(row);
         });
     } else {
@@ -185,7 +206,7 @@ function redirectToUniversityPage(uni) {
 }
 
 document.addEventListener('DOMContentLoaded', async function() {
-    const element = document.querySelector('[data-subject="qs-general"]');
+    const element = document.querySelector('[data-subject="qs_rank"]');
     if (element) {
         try {
             await displayEntries(element);
@@ -193,6 +214,6 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.error('Error displaying initial entries:', error);
         }
     } else {
-        console.error('No element found with data-subject="qs-general"');
+        console.error('No element found with data-subject="qs_rank"');
     }
 });
