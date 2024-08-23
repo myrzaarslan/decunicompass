@@ -1,5 +1,3 @@
-//TODO add other subjects, fix query unipage, fix alert
-
 let currentSource = 'topuniversities';
 let currentData = [];
 
@@ -88,8 +86,8 @@ function displayEntriesList() {
                 </div>
             </td>
             <td>${entry.rank}</td>
-            <td>${entry.overall_score}</td>
-        `;
+            <td>${entry.overall_score}</td>`
+        ;
         tbody.appendChild(row);
     });
 }
@@ -125,8 +123,8 @@ async function instantSearch() {
                     </div>
                 </td>
                 <td>${entry.rank}</td>
-                <td>${entry.overall_score}</td>
-            `;
+                <td>${entry.overall_score}</td>`
+            ;
             tbody.appendChild(row);
         });
     } else {

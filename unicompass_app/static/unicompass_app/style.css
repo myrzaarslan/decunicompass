@@ -1,0 +1,561 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #DFEFFF;
+}
+
+.header {
+  background-color: #2F30D0;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 102px
+}
+
+.header .logo {
+  display: flex;
+  align-items: center;
+}
+
+.header svg {
+  height: 50px;
+  width: 46.45px;
+}
+
+.header .nav-links {
+  display: flex;
+  align-items: center;
+}
+
+.header .nav-links a {
+  color: white;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+.header .auth-buttons a {
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.header .auth-buttons .signup {
+  width: 59px;
+  height: 18px;
+  border: none;
+  border-radius: 19px;
+  background-color: #2FD0CF; /* Turquoise background color */
+  color: white;
+  font-family: Lexend;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 17.5px;
+  cursor: pointer;
+  margin: none;
+  padding: 10px;
+}
+
+.header .auth-buttons .login {
+  border: none;
+  font-family: lexend;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17.5px;
+  text-align: center;
+  margin-left: 12px;
+}
+.header .auth-buttons .ranking {
+  border: none;
+  font-family: lexend;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 17.5px;
+  text-align: center;
+}
+
+.custom-rectangle {
+  padding: 0px 22px 0px 22px;
+  border-radius: 15px 15px 15px 15px;
+  background: radial-gradient(circle at 100% 100%, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 0% 0%/15px 15px no-repeat,
+    radial-gradient(circle at 0 100%, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 100% 0%/15px 15px no-repeat,
+    radial-gradient(circle at 100% 0, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 0% 100%/15px 15px no-repeat,
+    radial-gradient(circle at 0 0, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 100% 100%/15px 15px no-repeat,
+    linear-gradient(#fbfbfb, #fbfbfb) 50% 50%/calc(100% - 2px) calc(100% - 30px) no-repeat,
+    linear-gradient(#fbfbfb, #fbfbfb) 50% 50%/calc(100% - 30px) calc(100% - 2px) no-repeat,
+    linear-gradient(298deg, transparent 0%, #A5B4C5 100%),
+    linear-gradient(90deg, transparent 0%, #97aec6 100%);
+
+  border: 1px solid;
+  border-image-source: linear-gradient(180deg, #97AEC6 0%, #A5B4C5 100%);
+  box-shadow: 5px 5px 15px 0px rgba(171,185,199,1), -5px -5px 15px 0px rgba(255,255,255,1);
+  width: 914.4px;
+  height: 126.4px;
+  top: 162px;
+  margin-bottom: 11px
+}
+
+.custom-rectangle2 {
+  background: linear-gradient(#2f81d0, #2f81d0) 50% 50%/calc(100% - 1.6px) calc(100% - 1.6px) no-repeat,#97aec6;
+  border-radius: 0px;
+  padding: 22.8px;
+  box-sizing: content-box;
+  width: 1038.4px;
+  height: 34.4px;
+  gap: 0px;
+  justify-content: center; /* Center horizontally if needed */
+  align-items: center; /* Center vertically if needed */
+}
+
+.custom-rectangle3 {
+  background: radial-gradient(circle at 100% 100%, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 0% 0%/15px 15px no-repeat,
+  radial-gradient(circle at 0 100%, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 100% 0%/15px 15px no-repeat,
+  radial-gradient(circle at 100% 0, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 0% 100%/15px 15px no-repeat,
+  radial-gradient(circle at 0 0, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 100% 100%/15px 15px no-repeat,
+  linear-gradient(#fbfbfb, #fbfbfb) 50% 50%/calc(100% - 2px) calc(100% - 30px) no-repeat,
+  linear-gradient(#fbfbfb, #fbfbfb) 50% 50%/calc(100% - 30px) calc(100% - 2px) no-repeat,
+  linear-gradient(298deg, transparent 0%, #A5B4C5 100%),
+  linear-gradient(90deg, transparent 0%, #97aec6 100%);
+  border-image-source: linear-gradient(180deg, #97AEC6 0%, #A5B4C5 100%);
+
+  box-shadow: 5px 5px 15px 0px rgba(171,185,199,1), -5px -5px 15px 0px rgba(255,255,255,1);
+  border-radius: 15px;
+  padding: 22.5px;
+  box-sizing: content-box;
+  width: 1039px;
+  height: 35px;
+  gap: 0px;
+}
+.custom-rectangle-qs {
+  background: rgb(223,239,255);
+  background: linear-gradient(180deg, rgba(223,239,255,1) 100%, rgba(238,246,255,1) 100%);
+  box-shadow: 5px 5px 15px 0px rgba(171,185,199,1) inset, -5px -5px 15px 0px rgba(255,255,255,1) inset;
+  width: 314px;
+  height: 38px;
+  top: 58px;
+  left: 334px;
+  padding: 0px 0px 0px 0px;
+  margin-top: 45px;
+  margin-bottom: 45px;
+  margin-left: 64px;
+  gap: 0px;
+  border-radius: 15px 15px 15px 15px;
+  opacity: 0px;
+}
+.custom-rectangle-qs1 {
+  background: #2FD0CF; 
+  box-shadow: 5px 5px 15px 0px rgba(171,185,199,1) inset,
+  -5px -5px 15px 0px rgba(255,255,255,1) inset;
+  width: 157px;
+  height: 38px;
+  top: 39px;
+  left: 157px;
+  padding: 0px 0px 0px 0px;
+  gap: 0px;
+  border-radius: 15px 15px 15px 15px;
+  opacity: 0px;
+  text-align: center;
+}
+
+.search-container {
+  width: 604px;
+  height: 44.8px;
+  background: #DFEFFF;
+  border: 3px solid #35CFCF;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.search-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  padding: 0 10px;
+  background: none;
+  font-size: 16px;
+}
+
+.search-button {
+  width: 24px;
+  height: 24px;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.search-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 42px; /* расстояние между элементами */
+  margin-bottom: 46px
+}
+
+.header .auth-buttons .ranking {
+  border: none;
+  font-family: lexend;
+  color: white; 
+  margin-left: 10px; 
+  font-family: lexend; 
+  font-size: 16px; 
+  font-weight: 500; 
+  line-height: 20px; 
+  text-align: center;
+  margin-left: 42.71px;
+  padding-left: 0px;
+}
+
+.custom-button {
+  border: none;
+  cursor: pointer;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 28px
+}
+
+.pagination {
+  align-items: center;
+  justify-content: center;
+  width: 400px;
+  height: 60px;
+  padding: 14px 40px 15px 40px;
+  gap: 0px;
+  border-radius: 40px 20px 40px 20px;
+  opacity: 0px;
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: linear-gradient(180deg, #DFEFFF 100%, #EEF6FF 100%);;
+  box-shadow: 5px 5px 15px 0px rgba(171,185,199,1) inset, -5px -5px 15px 0px rgba(255,255,255,1);
+}
+
+.page-item {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #CEDDEB;
+  color: #000000;
+  font-size: 30px;
+  font-family: Lalezar;
+  font-weight: 400;
+  line-height: 47.01px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.page-item.active {
+  background: linear-gradient(135deg, #2F30D0 0%, #2FD0CF 100%);
+  color: #CEDDEB;
+}
+
+
+.page-item:hover:not(.active) {
+  background-color: #CEDDEB;
+}
+
+table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  empty-cells: show
+}
+
+.pizda thead th {
+  color: #000000; 
+  font-family: Lexend;
+  font-size: 30px;
+  font-weight: normal;
+  line-height: 37.5px;
+  text-align: center;
+  vertical-align: middle; 
+}
+
+.pizda thead th:first-child {
+  text-align: left; 
+  vertical-align: middle; 
+}
+
+.pizda th:nth-child(2) {
+  text-align: left; 
+  font-weight: 500;
+}
+
+.pizda th:nth-child(3) {
+  text-align: center; 
+  vertical-align: middle;
+}
+
+.pizda th:last-child {
+  text-align: center; 
+  vertical-align: middle;
+}
+.University {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+}
+
+.University th {
+  color: #000000; 
+  font-family: Lalezar;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 37.5px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.University th:nth-child(1) {
+  text-align: center;
+}
+
+.University th:nth-child(2) {
+  text-align: center;
+}
+
+.University th:nth-child(3) {
+  text-align: center;
+}
+
+.University th:nth-child(4) {
+  text-align: center;
+}
+
+.University tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.University tbody tr:hover {
+  background-color: #ddd;
+}
+
+.University td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: none;
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 1000;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+}
+
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  padding: 40px;
+  gap: 12px 133px;
+  isolation: isolate; 
+  position: relative;
+  width: 769px;
+  height: 596px;
+  background: linear-gradient(127.26deg, rgba(255, 255, 255, 0.5) 6.79%, rgba(47, 129, 208, 0.5) 93.21%);
+  backdrop-filter: blur(7.5px);
+  border-radius: 15px;
+}
+
+.popup .close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: skin;
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+.popup .close:hover {
+  color: none;
+}
+
+/* Стили для содержимого попапа */
+.popup-columns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.popup-column {
+  width: 45%;
+  padding: 0px;
+}
+
+.popup-header {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 0px;
+  font-family: Lexend Deca;
+  padding: 0px;
+}
+
+.popup ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.popup ul li {
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 700px) {
+  .popup {
+    width: 90%;
+    height: auto;
+  }
+}
+
+.popup-columns table {
+  width: 100%;
+  border-spacing: 20px;
+}
+
+.popup-columns td {
+  vertical-align: top;
+}
+
+.popup2 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  padding: 40px;
+  isolation: isolate; 
+  position: relative;
+  width: 579px;
+  height: 310px;
+  background: linear-gradient(127.26deg, rgba(255, 255, 255, 0.5) 6.79%, rgba(47, 129, 208, 0.5) 93.21%);
+  backdrop-filter: blur(7.5px);
+  border-radius: 15px;
+}
+.popup table {
+  width: 100%;
+  border-spacing: 20px 20px;
+}
+.popup td {
+  font-weight: 700;
+  font-size: 24px;
+  vertical-align: top;
+}
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  font-weight: skin;
+  text-decoration: none;
+  color: #FFFFFF;
+}
+.popup table {
+  width: 100%;
+  border-spacing: 20px;
+}
+
+/* Стили для ячеек таблицы */
+.popup td {
+  font-size: 14px;
+  font-weight: 400;
+  padding: none;
+  vertical-align: top;
+}
+
+/* Стили для заголовков таблицы */
+.popup th {
+  font-size: 14px;
+  font-weight: 400;
+  padding-bottom: 15px;
+  text-align: left;
+  font-family: Lexend Deca;
+}
+.popup-columns button {
+  background-color: transparent;
+  border: none;
+  color: #000;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 400;
+  font-family:Lexend Deca ;
+  text-align: left;
+  width: 100%;
+  padding-top:0px;
+  padding-left: 0px;
+  padding-bottom: 0px;
+  padding-right: 0px;
+}
+
+.popup-columns button:focus, .popup-columns button:active {
+  outline: none;
+  color: #000; /* сохраняем цвет текста после нажатия */
+}
+
+.popup-columns button:hover {
+  color: #2F30D0; /* меняем цвет при наведении */
+  text-decoration: none;
+}
+
+.table-button {
+  background-color: transparent;
+  border: none;
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+}
+
+.table-button:focus, .table-button:active {
+  outline: none;
+  color: inherit; /* Сохраняем цвет текста после нажатия */
+}
+
+.table-button:hover {
+  color: #2F30D0; /* Меняем цвет при наведении */
+  text-decoration: none;
+}
