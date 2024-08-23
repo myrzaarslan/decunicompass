@@ -5,8 +5,14 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     pass
 
+class University(models.Model):
+    title = models.CharField(max_length=256)
+
+    def __str__(self):
+        return self.title
+
 class THE_University(models.Model):
-    the_rank = models.CharField(max_length=10)
+    rank = models.CharField(max_length=10)
     
     # Subject-Specific Rankings
     rank_arts = models.CharField(max_length=10, blank=True, null=True)  # Arts & Humanities
@@ -21,8 +27,8 @@ class THE_University(models.Model):
     rank_psych = models.CharField(max_length=10, blank=True, null=True) # Psychology
 
     # Other Fields
-    name = models.CharField(max_length=255)
-    scores_overall = models.CharField(max_length=10)
+    title = models.CharField(max_length=255)
+    overall_score = models.CharField(max_length=10)
     nid = models.IntegerField()
     location = models.CharField(max_length=255)
     subjects_offered = models.TextField()
@@ -33,7 +39,7 @@ class THE_University(models.Model):
 class QS_University(models.Model):
     title = models.CharField(max_length=256)
     overall_score = models.FloatField(blank=True, null=True)
-    qs_rank = models.PositiveIntegerField(blank=True, null=True)
+    rank = models.PositiveIntegerField(blank=True, null=True)
     nid = models.IntegerField(blank=True, null=True)
 
     # Arts & Humanities Rankings

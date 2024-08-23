@@ -40,7 +40,7 @@ def qs_universities_list(request):
         universities = QS_University.objects.filter(**{subject_name + '__isnull': False}).order_by(subject_name)
     else:
         # Default to all universities if subject is 'general' or invalid
-        universities = QS_University.objects.all().order_by('qs_rank')
+        universities = QS_University.objects.all().order_by('rank')
 
     # Pagination
     total_records = universities.count()
@@ -48,7 +48,7 @@ def qs_universities_list(request):
     universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
 
     # Prepare the response data
-    data = list(universities.values('id', 'qs_rank', 'title', 'overall_score', 'city', 'country'))
+    data = list(universities.values('id', 'rank', 'title', 'overall_score', 'city', 'country'))
 
     response = {
         "current_page": page + 1,
@@ -78,7 +78,7 @@ def the_universities_list(request):
     universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
 
     # Prepare the response data
-    data = list(universities.values('id', 'the_rank', 'name', 'scores_overall', 'nid', 'location', 'subjects_offered'))
+    data = list(universities.values('id', 'rank', 'title', 'overall_score', 'nid', 'location', 'subjects_offered'))
 
     response = {
         "current_page": page + 1,
