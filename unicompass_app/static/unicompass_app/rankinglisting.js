@@ -3,7 +3,7 @@
 let currentSource = 'topuniversities';
 let currentData = [];
 
-const subjectMap = {
+const subjectMap = { // ID for every subject
     "qs-general": '3897789',
     "qs-engineering-technologies": '3948167',
     "qs-arts-humanities": '3948166',
@@ -26,7 +26,7 @@ const subjectMap = {
     "the-general": 'general'
 };
 
-async function getEntriesTopUniversities(subject = 'qs-general') {
+async function getEntriesTopUniversities(subject = 'qs-general') { // Swith to qs ranking
     const subjectId = subjectMap[subject];
     const url = `/api/qs_universities/?items_per_page=1000`; // Fetch all items
 
@@ -47,7 +47,7 @@ async function getEntriesTopUniversities(subject = 'qs-general') {
     }
 }
 
-async function getEntriesTimesHigherEducation(subjectname = 'general') {
+async function getEntriesTimesHigherEducation(subjectname = 'general') { // Switch to THE ranking
     const url = `/api/the_universities/?items_per_page=1000`; // Fetch all items
 
     try {
@@ -71,10 +71,10 @@ async function displayEntries(element) {
     const subject = element.getAttribute('data-subject');
     const subjectName = element.textContent;
 
-    const alertContent = document.getElementById('alertContent');
-    alertContent.textContent = `Ranking: ${currentSource === 'topuniversities' ? 'QS' : 'THE'}\nSubject Filter: ${subjectName}`;
+    // const alertContent = document.getElementById('alertContent');
+    // alertContent.textContent = `Ranking: ${currentSource === 'topuniversities' ? 'QS' : 'THE'}\nSubject Filter: ${subjectName}`;
 
-    document.getElementById('loadingSpinner').style.display = 'block';
+    // document.getElementById('loadingSpinner').style.display = 'block';
 
     try {
         let data;
@@ -88,33 +88,37 @@ async function displayEntries(element) {
     } catch (error) {
         console.error('Error fetching data:', error);
     } finally {
-        document.getElementById('loadingSpinner').style.display = 'none';
-        $(`#modal-${currentSource}`).modal('hide');
+        // document.getElementById('loadingSpinner').style.display = 'none';
+        // $(`#modal-${currentSource}`).modal('hide');
     }
 }
 
 function displayEntriesList() {
-    const tbody = document.querySelector('#unisTable tbody');
-    tbody.innerHTML = '';
+    const body = document.querySelector('#unvListing'); //???
+    body.innerHTML = '';
 
-    const actualRanking = document.querySelector('#actualRanking');
-    actualRanking.innerHTML = currentSource === 'topuniversities' ? 'Rank by QS' : 'Rank by THE';
+    const actualRanking = document.querySelector('#actualRanking'); //???
+    // actualRanking.innerHTML = currentSource === 'topuniversities' ? 'Rank by QS' : 'Rank by THE';
 
     let r = 0; // Initialize rank counter
     currentData.entries.forEach(entry => {
         r++;
-        const row = document.createElement('tr');
+        const row = document.createElement('div');
+        row.className = "custom-rectangle3";
         row.innerHTML = `
-            <td>${r}</td>
-            <td>${entry.name}
-                <div class="details-button-container">
-                    <button class="btn btn-info" onclick="redirectToUniversityPage('${entry.name}')">Details</button>
-                </div>
-            </td>
-            <td>${entry.rank}</td>
-            <td>${entry.overall_score}</td>
+            <table class="pizda">
+                <thead>
+                    <tr>
+                        <th>${r}</th>
+                        <th>${entry.name}
+                        </th>
+                        <th>${entry.rank}</th>
+                        <th>${entry.overall_score}</th>
+                    </tr>
+                </thead>
+            </table>
         `;
-        tbody.appendChild(row);
+        body.appendChild(row);
     });
 }
 
