@@ -65,6 +65,7 @@ body {
   line-height: 17.5px;
   text-align: center;
   margin-left: 12px;
+  cursor: pointer;
 }
 .header .auth-buttons .ranking {
   border: none;
@@ -127,35 +128,117 @@ body {
   height: 35px;
   gap: 0px;
 }
-.custom-rectangle-qs {
-  background: rgb(223,239,255);
-  background: linear-gradient(180deg, rgba(223,239,255,1) 100%, rgba(238,246,255,1) 100%);
-  box-shadow: 5px 5px 15px 0px rgba(171,185,199,1) inset, -5px -5px 15px 0px rgba(255,255,255,1) inset;
-  width: 314px;
-  height: 38px;
-  top: 58px;
-  left: 334px;
-  padding: 0px 0px 0px 0px;
-  margin-top: 45px;
-  margin-bottom: 45px;
+.button-box {
+	background: rgb(223,239,255);
+	background: linear-gradient(180deg, rgba(223,239,255,1) 100%, rgba(238,246,255,1) 100%);
+	box-shadow: 5px 5px 15px 0px rgba(171,185,199,1) inset, -5px -5px 15px 0px rgba(255,255,255,1) inset;
+	width: 314px;
+	height: 38px;
   margin-left: 64px;
-  gap: 0px;
-  border-radius: 15px 15px 15px 15px;
-  opacity: 0px;
+	padding: 0;
+	border-radius: 15px;
+	opacity: 1; /* Set to 1 to make the element visible */
+	position: relative;
 }
-.custom-rectangle-qs1 {
-  background: #2FD0CF; 
-  box-shadow: 5px 5px 15px 0px rgba(171,185,199,1) inset,
-  -5px -5px 15px 0px rgba(255,255,255,1) inset;
-  width: 157px;
-  height: 38px;
-  top: 39px;
-  left: 157px;
-  padding: 0px 0px 0px 0px;
-  gap: 0px;
-  border-radius: 15px 15px 15px 15px;
-  opacity: 0px;
-  text-align: center;
+
+.toggle-btn {
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	outline: none;
+	position: relative;
+	text-align: center;
+    font-family: lexend;
+    font-weight: bold;
+    font-size: 30px;
+    padding-left: 56.5px;
+    padding-right: 56.5px;
+}
+.toggle-btn2 {
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	outline: none;
+	position: relative;
+	text-align: center;
+    font-family: lexend;
+    font-weight: bold;
+    font-size: 30px;
+    padding-left: 43.5px;
+    padding-right: 0px;
+}
+
+.second-button-box {
+	background: rgb(223,239,255);
+	background: linear-gradient(180deg, rgba(223,239,255,1) 100%, rgba(238,246,255,1) 100%);
+	box-shadow: 5px 5px 15px 0px rgba(171,185,199,1) inset, -5px -5px 15px 0px rgba(255,255,255,1) inset;
+	width: 314px;
+	height: 38px;
+  padding-left: 0px;
+	padding: 0;
+	margin: 0px;
+	border-radius: 15px;
+	opacity: 1; /* Set to 1 to make the element visible */
+	position: relative;
+}
+
+.second-toggle-btn {
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	outline: none;
+	position: relative;
+	text-align: center;
+    font-family: lexend;
+    font-weight: bold;
+    font-size: 30px;
+    padding-left: 18.5px;
+    padding-right: 18.5px;
+}
+.second-toggle-btn2 {
+	cursor: pointer;
+	background: transparent;
+	border: 0;
+	outline: none;
+	position: relative;
+	text-align: center;
+    font-family: lexend;
+    font-weight: bold;
+    font-size: 30px;
+    padding-left: 15px;
+    padding-right: 0px;
+}
+
+#btn-rank {
+	background: #2FD0CF;
+	box-shadow: 5px 5px 15px 0px rgba(171,185,199,1) inset, -5px -5px 15px 0px rgba(255,255,255,1) inset;
+	width: 157px;
+	height: 38px;
+	top: 0; /* Adjusted to align properly within .button-box */
+	left: 0; /* Initially positioned to the left */
+	padding: 0;
+	border-radius: 15px;
+	opacity: 1; /* Set to 1 to make the element visible */
+	position: absolute;
+	transition: .5s;
+	text-align: center;
+
+}
+
+#btn-subject {
+	background: #2FD0CF;
+	box-shadow: 5px 5px 15px 0px rgba(171,185,199,1) inset, -5px -5px 15px 0px rgba(255,255,255,1) inset;
+	width: 157px;
+	height: 38px;
+	top: 0; /* Adjusted to align properly within .button-box */
+	left: 0; /* Initially positioned to the left */
+	padding: 0;
+	border-radius: 15px;
+	opacity: 1; /* Set to 1 to make the element visible */
+	position: absolute;
+	transition: .5s;
+	text-align: center;
+
 }
 
 .search-container {
@@ -202,6 +285,8 @@ main {
   margin-bottom: 46px
 }
 
+
+
 .header .auth-buttons .ranking {
   border: none;
   font-family: lexend;
@@ -219,6 +304,26 @@ main {
 .custom-button {
   border: none;
   cursor: pointer;
+  background-color: none;
+  margin-bottom: 42px;
+  background-color: #DFEFFF;
+  background: radial-gradient(circle at 100% 100%, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 0% 0%/15px 15px no-repeat,
+  radial-gradient(circle at 0 100%, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 100% 0%/15px 15px no-repeat,
+  radial-gradient(circle at 100% 0, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 0% 100%/15px 15px no-repeat,
+  radial-gradient(circle at 0 0, #fbfbfb 0, #fbfbfb 14px, transparent 14px) 100% 100%/15px 15px no-repeat,
+  linear-gradient(#fbfbfb, #fbfbfb) 50% 50%/calc(100% - 2px) calc(100% - 30px) no-repeat,
+  linear-gradient(#fbfbfb, #fbfbfb) 50% 50%/calc(100% - 30px) calc(100% - 2px) no-repeat,
+  linear-gradient(298deg, transparent 0%, #A5B4C5 100%),
+  linear-gradient(90deg, transparent 0%, #97aec6 100%);
+  border-image-source: linear-gradient(180deg, #97AEC6 0%, #A5B4C5 100%);
+
+  box-shadow: 5px 5px 15px 0px rgba(171,185,199,1), -5px -5px 15px 0px rgba(255,255,255,1);
+  border-radius: 15px;
+  padding: 22.5px;
+  box-sizing: content-box;
+  width: 1039px;
+  height: 35px;
+  gap: 0px;
 }
 
 footer {
@@ -318,7 +423,7 @@ table {
 .University th {
   color: #000000; 
   font-family: Lalezar;
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 400;
   line-height: 37.5px;
   text-align: center;
@@ -361,8 +466,8 @@ table {
   bottom: 0;
   left: 0;
   right: 0;
-  background: none;
-  transition: opacity 500ms ease-in-out, visibility 500ms ease-in-out;
+  background: none; /* Dim the background outside the popup */
+  transition: opacity 300ms;
   visibility: hidden;
   opacity: 0;
   z-index: 1000;
@@ -389,8 +494,8 @@ table {
   width: 769px;
   height: 596px;
   background: linear-gradient(127.26deg, rgba(255, 255, 255, 0.5) 6.79%, rgba(47, 129, 208, 0.5) 93.21%);
-  backdrop-filter: blur(7.5px);
   border-radius: 15px;
+  backdrop-filter: blur(7.5px);
 }
 
 .popup .close {
@@ -559,3 +664,21 @@ table {
   color: #2F30D0; /* Меняем цвет при наведении */
   text-decoration: none;
 }
+
+/* .custom-rectangle-qs1 button {
+  font-family: Lexend; 
+  font-size: 30px; 
+  font-weight: 700; 
+  line-height: 37.5px; 
+  color: #DFEFFF;
+}
+
+.custom-rectangle-qs2 button {
+  font-family: Lexend; 
+  font-size: 30px; 
+  font-weight: 700; 
+  line-height: 37.5px; 
+  color: #000000; 
+  padding-right: 25px;
+} */
+

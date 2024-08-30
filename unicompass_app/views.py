@@ -13,7 +13,7 @@ def index(request):
     return render(request, "unicompass_app/index.html")
 
 def exp(request):
-    return render(request, "unicompass_app/sigmapizda.html")
+    return render(request, "unicompass_app/listing.html")
 
 def qs_universities_list(request):
     # Get parameters from the URL

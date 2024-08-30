@@ -113,27 +113,28 @@ function createPagination(currentPage) {
 
 // Display fetched data in the UI
 function displayEntriesList() {
-    const body = document.querySelector('#unvListing');
-    body.innerHTML = '';
+    const rbody = document.getElementById('unvListin');
+    rbody.innerHTML = '';
 
     let r = pageIndex * 10; // For ordering
     rankingTypeData.entries.forEach(entry => {
         r++;
         const row = document.createElement('div');
-        row.className = "custom-rectangle3";
-        row.innerHTML = `
-            <table class="pizda">
-                <thead>
-                    <tr>
-                        <th>${r}</th>
-                        <th>${entry.name}</th>
-                        <th>${entry.rank}</th>
-                        <th>${entry.overall_score}</th>
-                    </tr>
-                </thead>
-            </table>
+        const rtable = document.createElement('table');
+        rtable.className = "University";
+        row.className = "custom-button";
+        rtable.innerHTML = `
+            <thead>
+                <tr>
+                    <th>${r}</th>
+                    <th>${entry.name}</th>
+                    <th>${entry.rank}</th>
+                    <th>${entry.overall_score}</th>
+                </tr>
+            </thead>
         `;
-        body.appendChild(row);
+        row.appendChild(rtable);
+        rbody.appendChild(row);
     });
 }
 
@@ -146,3 +147,105 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.error('Error initializing page:', error);
     }
 });
+
+function toggleSwitch(takenRank) {
+    if (takenRank != rankingType) {
+        rankingType = takenRank;
+        console.log(`The ranking is ${rankingType}`)
+        pageIndex = 0;
+
+        // Clear the search input field
+        const searchInput = document.querySelector('.search-input');
+        searchInput.value = '';
+
+        // Refresh the data
+        countPages();
+        displayEntries();
+        createPagination(1);
+    }
+}
+
+
+// All animation functions::::
+function leftSwitchRank() {
+    const btn = document.getElementById('btn-rank');
+    btn.style.left = '0px';
+
+}
+
+function rightSwitchRank() {
+    const btn = document.getElementById('btn-rank');
+    btn.style.left = '157px';
+}
+
+function leftSwitchSubject() {
+    const btn = document.getElementById('btn-subject');
+    btn.style.left = '0px';
+}
+
+function rightSwitchSubject() {
+    const btn = document.getElementById('btn-subject');
+    btn.style.left = '157px';
+    if (rankingType == 'the') {
+        window.location.hash = 'popup2';
+        closeButton = document.querySelector('.close');
+        if (closeButton.click) {
+            leftSwitchSubject();
+        }
+    }
+    else if (rankingType == 'qs') {
+        window.location.hash = 'popup1';
+        closeButton = document.querySelector('.close');
+        if (closeButton.click) {
+            leftSwitchSubject();
+        }
+    }
+}
+
+async function instantSearch() {
+    const searchTerm = document.querySelector('.search-input').value.trim().toLowerCase();
+    const rbody = document.getElementById('unvListin');
+
+    if (!rbody) {
+        console.error('Element with id "unvListin" not found.');
+        return;
+    }
+
+    rbody.innerHTML = ''; // Clear previous results
+
+    if (searchTerm === '') {
+        displayEntriesList(); // Display all data if search term is empty
+        return;
+    }
+
+    const searchResults = rankingTypeData.entries.filter(entry => entry.name.toLowerCase().includes(searchTerm));
+
+    if (searchResults.length > 0) {
+        let r = pageIndex * 10; // Reset rank counter
+        searchResults.forEach(entry => {
+            r++;
+            const row = document.createElement('div');
+            const rtable = document.createElement('table');
+            rtable.className = "University";
+            row.className = "custom-button";
+            rtable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>${r}</th>
+                        <th>${entry.name}</th>
+                        <th>${entry.rank}</th>
+                        <th>${entry.overall_score}</th>
+                    </tr>
+                </thead>
+            `;
+            row.appendChild(rtable);
+            rbody.appendChild(row);
+        });
+    } else {
+        // No results found
+        const noResultsRow = document.createElement('div');
+        noResultsRow.className = "no-results";
+        noResultsRow.innerHTML = `<p>No results found for "${searchTerm}".</p>`;
+        rbody.appendChild(noResultsRow);
+    }
+}
