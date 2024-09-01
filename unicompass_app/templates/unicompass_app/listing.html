@@ -9,7 +9,7 @@
     <link href='https://fonts.googleapis.com/css?family=Lalezar' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Lexend Deca' rel='stylesheet'>
     <link rel="stylesheet" href="\static\unicompass_app\styles1.css">
-    <script src="{% static 'unicompass_app\ranking_dimashik.js' %}"></script>
+    <script src="{% static 'unicompass_app\ranking_dimash.js' %}"></script>
     <title>UniCompass</title>
 </head>
 
@@ -73,79 +73,79 @@
                             <tr>
                                 <td class="popup-column">
                                     <div class="popup-header"><button
-                                            style="font-weight: 700; font-size: 24px; vertical-align: top">Arts &
+                                            data-subject="rank_arts_humanities" style="font-weight: 700; font-size: 24px; vertical-align: top">Arts &
                                             Humanities</button></div>
                                     <ul>
-                                        <li data-subject="qs-general"><button>Linguistics</button></li>
-                                        <li><button>Music</button></li>
-                                        <li><button>Theology, Divinity and Religious Studies</button></li>
-                                        <li><button>Archaeology</button></li>
-                                        <li><button>Architecture and Built Environment</button></li>
-                                        <li><button>Art and Design</button></li>
-                                        <li><button>Classics and Ancient History</button></li>
-                                        <li><button>English Language and Literature</button></li>
-                                        <li><button>History</button></li>
-                                        <li><button>Art History</button></li>
-                                        <li><button>Modern Languages</button></li>
-                                        <li><button>Performing Arts</button></li>
-                                        <li><button>Philosophy</button></li>
+                                        <li data-subject="rank_linguistics"><button>Linguistics</button></li>
+                                        <li data-subject="rank_music"><button>Music</button></li>
+                                        <li data-subject="rank_theology" ><button>Theology, Divinity and Religious Studies</button></li>
+                                        <li data-subject="rank_archaeology"><button>Archaeology</button></li>
+                                        <li data-subject="rank_architecture"><button>Architecture and Built Environment</button></li>
+                                        <li data-subject="rank_art_design"><button>Art and Design</button></li>
+                                        <li data-subject="rank_classics"><button>Classics and Ancient History</button></li>
+                                        <li data-subject="rank_english"><button>English Language and Literature</button></li>
+                                        <li data-subject="rank_history"><button>History</button></li>
+                                        <li data-subject="rank_art_history"><button>Art History</button></li>
+                                        <li data-subject="rank_modern_languages"><button>Modern Languages</button></li>
+                                        <li data-subject="rank_performing_arts"><button>Performing Arts</button></li>
+                                        <li data-subject="rank_philosophy"><button>Philosophy</button></li>
                                     </ul>
                                 </td>
                                 <td class="popup-column">
                                     <div class="popup-header" style="text-align: right;border: 0px; padding: 0px;">
                                         <button
-                                            style="border: 0px; padding: 0px;font-weight: 700; font-size: 24px; vertical-align: top; padding-left: 56px ; ">Engineering
+                                            data-subject="rank_eng_tech" style="border: 0px; padding: 0px;font-weight: 700; font-size: 24px; vertical-align: top; padding-left: 56px ; ">Engineering
                                             and Technology</button>
                                     </div>
                                     <ul class="popup-list">
-                                        <li><button style="padding-left: 56px">Engineering - Chemical</button></li>
-                                        <li><button style="padding-left: 56px">Engineering - Civil and
+                                        <li data-subject="rank_chem_eng"><button style="padding-left: 56px">Engineering - Chemical</button></li>
+                                        <li data-subject="rank_civil_eng"><button style="padding-left: 56px">Engineering - Civil and
                                                 Structural</button>
                                         </li>
-                                        <li><button style="padding-left: 56px">Computer Science and Information
+                                        <li data-subject="rank_comp_sci"><button style="padding-left: 56px">Computer Science and Information
                                                 Systems</button></li>
-                                        <li><button style="padding-left: 56px">Data Science and Artificial
+                                        <li data-subject="rank_data_sci"><button style="padding-left: 56px">Data Science and Artificial
                                                 Intelligence</button></li>
-                                        <li><button style="padding-left: 56px">Engineering - Electrical and
+                                        <li data-subject="rank_elec_eng"><button style="padding-left: 56px">Engineering - Electrical and
                                                 Electronic</button></li>
-                                        <li><button style="padding-left: 56px">Engineering - Petroleum</button></li>
-                                        <li><button style="padding-left: 56px">Engineering - Mechanical</button></li>
-                                        <li><button style="padding-left: 56px">Engineering - Mineral and Mining</button>
+                                        <li data-subject="rank_pet_eng"><button style="padding-left: 56px">Engineering - Petroleum</button></li>
+                                        <li data-subject="rank_mech_eng"><button style="padding-left: 56px">Engineering - Mechanical</button></li>
+                                        <li data-subject="rank_mining_eng"><button style="padding-left: 56px">Engineering - Mineral and Mining</button>
                                         </li>
                                     </ul>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="popup-column">
-                                    <div class="popup-header" style="padding-top: 23px;"><button style="font-weight: 700;
+                                    <div class="popup-header" style="padding-top: 23px;"><button data-subject="rank_nat_sci" style="font-weight: 700;
                                         font-size: 24px;
                                         vertical-align: top">Natural Sciences</button></div>
                                     <ul>
-                                        <li><button>Chemistry</button></li>
-                                        <li><button>Earth and Marine Sciences</button></li>
-                                        <li><button>Environmental Sciences</button></li>
-                                        <li><button>Geography</button></li>
-                                        <li><button>Geology</button></li>
-                                        <li><button>Geophysics</button></li>
-                                        <li><button>Materials Sciences</button></li>
-                                        <li><button>Mathematics</button></li>
-                                        <li><button>Physics and Astronomy</button></li>
+                                        <li data-subject="rank_chemistry"><button>Chemistry</button></li>
+                                        <li data-subject="rank_earth_marine_sci"><button>Earth and Marine Sciences</button></li>
+                                        <li data-subject="rank_env_sci"><button>Environmental Sciences</button></li>
+                                        <li data-subject="rank_geography"><button>Geography</button></li>
+                                        <li data-subject="rank_geology"><button>Geology</button></li>
+                                        <li data-subject="rank_geophysics"><button>Geophysics</button></li>
+                                        <li data-subject="rank_materials_sci"><button>Materials Sciences</button></li>
+                                        <li data-subject="rank_math"><button>Mathematics</button></li>
+                                        <li data-subject="rank_physics_astronomy"><button>Physics and Astronomy</button></li>
                                     </ul>
                                 </td>
                                 <td class="popup-column" style="text-align: left;">
                                     <div class="popup-header" style="padding-left: 56px; padding-top: 23px;"><button
-                                            style="font-weight: 700; font-size: 24px;">Life Sciences & Medicine</button>
+                                        data-subject="rank_life_sci" style="font-weight: 700; font-size: 24px;">Life Sciences & Medicine</button>
                                     </div>
                                     <ul>
-                                        <li><button style="padding-left: 56px">Agriculture and Forestry</button></li>
-                                        <li><button style="padding-left: 56px">Anatomy and Physiology</button></li>
-                                        <li><button style="padding-left: 56px">Biological Sciences</button></li>
-                                        <li><button style="padding-left: 56px">Dentistry</button></li>
-                                        <li><button style="padding-left: 56px">Medicine</button></li>
-                                        <li><button style="padding-left: 56px">Pharmacy and Pharmacology</button></li>
-                                        <li><button style="padding-left: 56px">Nursing</button></li>
-                                        <li><button style="padding-left: 56px">Psychology</button></li>
-                                        <li><button style="padding-left: 56px">Veterinary Science</button></li>
+                                        <li data-subject="rank_agriculture"><button style="padding-left: 56px">Agriculture and Forestry</button></li>
+                                        <li data-subject="rank_anatomy"><button style="padding-left: 56px">Anatomy and Physiology</button></li>
+                                        <li data-subject="rank_bio_sci"><button style="padding-left: 56px">Biological Sciences</button></li>
+                                        <li data-subject="rank_dentistry"><button style="padding-left: 56px">Dentistry</button></li>
+                                        <li data-subject="rank_medicine"><button style="padding-left: 56px">Medicine</button></li>
+                                        <li data-subject="rank_pharmacy"><button style="padding-left: 56px">Pharmacy and Pharmacology</button></li>
+                                        <li data-subject="rank_nursing"><button style="padding-left: 56px">Nursing</button></li>
+                                        <li data-subject="rank_psychology"><button style="padding-left: 56px">Psychology</button></li>
+                                        <li data-subject="rank_vet_sci"><button style="padding-left: 56px">Veterinary Science</button></li>
                                     </ul>
                                 </td>
                             </tr>
@@ -160,7 +160,7 @@
                 <table>
                     <tr>
                         <td>
-                            <button class="table-button">Arts & Humanities</button>
+                            <button data-subject="rank_arts" class="table-button">Arts & Humanities</button>
                         </td>
                         <td>
                             <button class="table-button">Engineering</button>
@@ -168,34 +168,34 @@
                     </tr>
                     <tr>
                         <td>
-                            <button class="table-button">Business & Economics</button>
+                            <button data-subject="rank_bus" class="table-button">Business & Economics</button>
                         </td>
                         <td>
-                            <button class="table-button">Law</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="table-button">Clinical & Health</button>
-                        </td>
-                        <td>
-                            <button class="table-button">Life Sciences</button>
+                            <button data-subject="rank_law" class="table-button">Law</button>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <button class="table-button">Computer Science</button>
+                            <button data-subject="rank_clin" class="table-button">Clinical & Health</button>
                         </td>
                         <td>
-                            <button class="table-button">Physical Sciences</button>
+                            <button data-subject="rank_life" class="table-button">Life Sciences</button>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <button class="table-button">Education</button>
+                            <button data-subject="rank_comp" class="table-button">Computer Science</button>
                         </td>
                         <td>
-                            <button class="table-button">Psychology</button>
+                            <button data-subject="rank_phys" class="table-button">Physical Sciences</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button data-subject="rank_edu" class="table-button">Education</button>
+                        </td>
+                        <td>
+                            <button data-subject="rank_psych" class="table-button">Psychology</button>
                         </td>
                     </tr>
                 </table>

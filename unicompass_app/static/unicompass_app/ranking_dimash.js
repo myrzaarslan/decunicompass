@@ -4,6 +4,7 @@ let pageIndex = 0;
 let totalUniversities;
 let totalPages;
 let itemsPerPage;
+let subject = 'general'
 
 // Fetches data and calculates total pages dynamically
 async function countPages() {
@@ -29,9 +30,9 @@ async function countPages() {
 // Fetches the correct URL based on the ranking type and page index
 function fetchData() {
     if (rankingType == "qs") {
-        return `/api/qs_universities/?page=${pageIndex}`;
+        return `/api/qs_universities/?page=${pageIndex}&subject=${subject}`;
     } else if (rankingType == "the") {
-        return `/api/the_universities/?page=${pageIndex}`;
+        return `/api/the_universities/?page=${pageIndex}&subject=${subject}`;
     } else {
         return "";
     }
@@ -58,7 +59,7 @@ async function getEntries() {
         if (!data.data) throw new Error("No data found");
 
         return data.data.map(entry => ({
-            rank: entry.qs_rank,
+            rank: entry.rank,
             name: entry.title,
             overall_score: entry.overall_score,
             totalUniversities: entry.total_records
@@ -140,6 +141,7 @@ function displayEntriesList() {
 
 // Initialize the data fetching and pagination setup on page load
 document.addEventListener('DOMContentLoaded', async function () {
+
     try {
         await countPages();  // Fetch data and setup pagination
         await displayEntries();  // Display entries for the first page
@@ -168,12 +170,14 @@ function toggleSwitch(takenRank) {
 
 // All animation functions::::
 function leftSwitchRank() {
+    subject = 'general'
     const btn = document.getElementById('btn-rank');
     btn.style.left = '0px';
 
 }
 
 function rightSwitchRank() {
+    subject = 'general'
     const btn = document.getElementById('btn-rank');
     btn.style.left = '157px';
 }
@@ -200,6 +204,16 @@ function rightSwitchSubject() {
             leftSwitchSubject();
         }
     }
+    document.querySelectorAll('#popup1 button[data-subject], #popup2 button[data-subject], ul li button').forEach(function(button) {
+        button.addEventListener('click', function() {
+
+            subject = this.parentElement.getAttribute('data-subject') || this.getAttribute('data-subject');
+
+            displayEntries();
+            closeButton = document.querySelector('.close');
+            closeButton.click();
+        });
+    });
 }
 
 async function instantSearch() {

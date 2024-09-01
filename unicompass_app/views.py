@@ -5,7 +5,6 @@ from django.shortcuts import render
 from django.urls import reverse
 import json
 from django.core.paginator import Paginator
-from .genaicode.genai_university import get_university_info
 from .models import *
 
 # Create your views here.
@@ -66,6 +65,12 @@ def the_universities_list(request):
     page = int(request.GET.get('page', 0))
     items_per_page = int(request.GET.get('items_per_page', 10))
 
+    # List of all valid subject fields in the THE_University model
+    valid_subject_fields = [
+        'rank_arts', 'rank_bus', 'rank_clin', 'rank_comp', 'rank_edu', 'rank_eng', 
+        'rank_law', 'rank_life', 'rank_phys', 'rank_psych'
+    ]
+
     # Filter universities based on the subject
     if subject_name != 'general':
         universities = THE_University.objects.filter(**{subject_name + '__isnull': False}).order_by(subject_name)
@@ -91,8 +96,7 @@ def the_universities_list(request):
     return JsonResponse(response)
 
 def university(request, uni):
-    uni_info = get_university_info(uni)
-    return render(request, "unicompass_app/unipage.html", {'uni_info': uni_info})
+    return render(request, "unicompass_app/unipage.html")
 
 def login_view(request):
     if request.method == "POST":
