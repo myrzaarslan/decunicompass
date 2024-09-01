@@ -1,10 +1,11 @@
 let rankingType = "qs";
 let rankingTypeData = [];
+let kzUniversitiesData = [];
 let pageIndex = 0;
 let totalUniversities;
 let totalPages;
 let itemsPerPage;
-let subject = 'general'
+let subject = 'general';
 
 // Fetches data and calculates total pages dynamically
 async function countPages() {
@@ -38,10 +39,31 @@ function fetchData() {
     }
 }
 
+// Fetches data from the KZ API
+async function fetchKZUniversities() {
+    try {
+        const response = await fetch('/api/kz_universities/');
+        const data = await response.json();
+
+        if (!data.data) throw new Error("No KZ data found");
+
+        return data.data.map(entry => ({
+            name: entry.title
+        }));
+    } catch (error) {
+        console.error('Error fetching KZ universities data:', error);
+        throw error;
+    }
+}
+
 async function displayEntries() {
     try {
         const data = await getEntries();
         rankingTypeData = { rankingType, entries: data };
+
+        // Fetch KZ universities and store the result
+        kzUniversitiesData = await fetchKZUniversities();
+
         displayEntriesList();
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -61,8 +83,7 @@ async function getEntries() {
         return data.data.map(entry => ({
             rank: entry.rank,
             name: entry.title,
-            overall_score: entry.overall_score,
-            totalUniversities: entry.total_records
+            overall_score: entry.overall_score
         }));
     } catch (error) {
         console.error('Error fetching some universities data:', error);
@@ -112,7 +133,7 @@ function createPagination(currentPage) {
     }
 }
 
-// Display fetched data in the UI
+// Display fetched data in the UI, including KZ universities with a separator
 function displayEntriesList() {
     const rbody = document.getElementById('unvListin');
     rbody.innerHTML = '';
@@ -136,6 +157,29 @@ function displayEntriesList() {
         `;
         row.appendChild(rtable);
         rbody.appendChild(row);
+    });
+
+    // Add a line separator after QS and THE universities
+    const separator = document.createElement('hr');
+    rbody.appendChild(separator);
+
+    // Display KZ universities below the separator
+    kzUniversitiesData.forEach(entry => {
+        const row = document.createElement('div');
+        const rtable = document.createElement('table');
+        rtable.className = "University";
+        row.className = "custom-button";
+        rtable.innerHTML = `
+            <thead>
+                <tr>
+                    <th>${r + 1}</th>
+                    <th>${entry.name}</th>
+                </tr>
+            </thead>
+        `;
+        row.appendChild(rtable);
+        rbody.appendChild(row);
+        r++;
     });
 }
 
@@ -232,10 +276,19 @@ async function instantSearch() {
         return;
     }
 
-    const searchResults = rankingTypeData.entries.filter(entry => entry.name.toLowerCase().includes(searchTerm));
+    // Filter QS and THE universities
+    const searchResults = rankingTypeData.entries.filter(entry => 
+        entry.name.toLowerCase().includes(searchTerm)
+    );
+
+    // Filter KZ universities directly from the kzUniversitiesData array
+    const searchResultsKZ = kzUniversitiesData.filter(entry => 
+        entry.name.toLowerCase().includes(searchTerm)
+    );
+
+    let r = pageIndex * 10; // Reset rank counter
 
     if (searchResults.length > 0) {
-        let r = pageIndex * 10; // Reset rank counter
         searchResults.forEach(entry => {
             r++;
             const row = document.createElement('div');
@@ -255,7 +308,27 @@ async function instantSearch() {
             row.appendChild(rtable);
             rbody.appendChild(row);
         });
-    } else {
+    }
+
+    if (searchResultsKZ.length > 0) {
+        searchResultsKZ.forEach(entry => {
+            r++;
+            const row = document.createElement('div');
+            const rtable = document.createElement('table');
+            rtable.className = "University";
+            row.className = "custom-button";
+            rtable.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>${r}</th>
+                        <th>${entry.name}</th>
+                    </tr>
+                </thead>
+            `;
+            row.appendChild(rtable);
+            rbody.appendChild(row);
+        });
+    } else if (searchResults.length === 0 && searchResultsKZ.length === 0) {
         // No results found
         const noResultsRow = document.createElement('div');
         noResultsRow.className = "no-results";

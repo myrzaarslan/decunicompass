@@ -95,6 +95,32 @@ def the_universities_list(request):
 
     return JsonResponse(response)
 
+def kz_universities_list(request):
+    # Get pagination parameters from the URL
+    page = int(request.GET.get('page', 0))
+    items_per_page = int(request.GET.get('items_per_page', 10))
+
+    # Get all universities
+    universities = University.objects.all().order_by('title')
+
+    # Pagination logic
+    total_records = universities.count()
+    total_pages = (total_records + items_per_page - 1) // items_per_page
+    universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
+
+    # Prepare the response data
+    data = list(universities.values('id', 'title'))
+
+    response = {
+        "current_page": page + 1,
+        "total_pages": total_pages,
+        "items_per_page": items_per_page,
+        "total_records": total_records,
+        "data": data
+    }
+
+    return JsonResponse(response)
+
 def university(request, uni):
     return render(request, "unicompass_app/unipage.html")
 
