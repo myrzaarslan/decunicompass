@@ -9,7 +9,7 @@ from .models import *
 
 # Create your views here.
 def index(request):
-    return render(request, "unicompass_app/index.html")
+    return render(request, "unicompass_app/listing.html")
 
 def exp(request):
     return render(request, "unicompass_app/listing.html")

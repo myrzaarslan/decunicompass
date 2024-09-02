@@ -6,8 +6,8 @@ let totalUniversities;
 let totalPages;
 let itemsPerPage;
 let subject = 'general';
+let searchTerm = ''; // Added this variable to keep track of the search term
 
-// Fetches data and calculates total pages dynamically
 async function countPages() {
     const url = fetchData();
 
@@ -15,7 +15,6 @@ async function countPages() {
         const response = await fetch(url);
         const data = await response.json();
 
-        // Get the total records and items per page from the response
         totalUniversities = data.total_records;
         totalPages = data.total_pages;
         itemsPerPage = data.items_per_page;
@@ -28,7 +27,6 @@ async function countPages() {
     }
 }
 
-// Fetches the correct URL based on the ranking type and page index
 function fetchData() {
     if (rankingType == "qs") {
         return `/api/qs_universities/?page=${pageIndex}&subject=${subject}`;
@@ -39,7 +37,6 @@ function fetchData() {
     }
 }
 
-// Fetches data from the KZ API
 async function fetchKZUniversities() {
     try {
         const response = await fetch('/api/kz_universities/');
@@ -61,7 +58,6 @@ async function displayEntries() {
         const data = await getEntries();
         rankingTypeData = { rankingType, entries: data };
 
-        // Fetch KZ universities and store the result
         kzUniversitiesData = await fetchKZUniversities();
 
         displayEntriesList();
@@ -70,7 +66,6 @@ async function displayEntries() {
     }
 }
 
-// Fetches and formats the entries for display
 async function getEntries() {
     const url = fetchData();
 
@@ -91,13 +86,12 @@ async function getEntries() {
     }
 }
 
-// Creates the pagination buttons dynamically
 function createPagination(currentPage) {
     const pagination = document.querySelector('.pagination');
     pagination.innerHTML = '';
 
     let startPage, endPage;
-    const maxButtons = 5;  // You can set how many buttons you want visible at a time
+    const maxButtons = 5;
 
     if (totalPages <= maxButtons) {
         startPage = 1;
@@ -113,7 +107,6 @@ function createPagination(currentPage) {
         endPage = currentPage + 2;
     }
 
-    // Generate pagination buttons
     for (let i = startPage; i <= endPage; i++) {
         const pageButton = document.createElement('div');
         pageButton.className = 'page-item';
@@ -133,12 +126,11 @@ function createPagination(currentPage) {
     }
 }
 
-// Display fetched data in the UI, including KZ universities with a separator
 function displayEntriesList() {
     const rbody = document.getElementById('unvListin');
     rbody.innerHTML = '';
 
-    let r = pageIndex * 10; // For ordering
+    let r = pageIndex * itemsPerPage;
     rankingTypeData.entries.forEach(entry => {
         r++;
         const row = document.createElement('div');
@@ -159,12 +151,11 @@ function displayEntriesList() {
         rbody.appendChild(row);
     });
 
-    // Add a line separator after QS and THE universities
     const separator = document.createElement('hr');
     rbody.appendChild(separator);
 
-    // Display KZ universities below the separator
     kzUniversitiesData.forEach(entry => {
+        r++;
         const row = document.createElement('div');
         const rtable = document.createElement('table');
         rtable.className = "University";
@@ -172,7 +163,7 @@ function displayEntriesList() {
         rtable.innerHTML = `
             <thead>
                 <tr>
-                    <th>${r + 1}</th>
+                    <th>${r}</th>
                     <th>${entry.name}</th>
                 </tr>
             </thead>
@@ -183,12 +174,10 @@ function displayEntriesList() {
     });
 }
 
-// Initialize the data fetching and pagination setup on page load
 document.addEventListener('DOMContentLoaded', async function () {
-
     try {
-        await countPages();  // Fetch data and setup pagination
-        await displayEntries();  // Display entries for the first page
+        await countPages();
+        await displayEntries();
     } catch (error) {
         console.error('Error initializing page:', error);
     }
@@ -200,35 +189,34 @@ function toggleSwitch(takenRank) {
         console.log(`The ranking is ${rankingType}`)
         pageIndex = 0;
 
-        // Clear the search input field
         const searchInput = document.querySelector('.search-input');
         searchInput.value = '';
 
-        // Refresh the data
         countPages();
         displayEntries();
         createPagination(1);
     }
 }
 
-
-// All animation functions::::
 function leftSwitchRank() {
     subject = 'general'
     const btn = document.getElementById('btn-rank');
     btn.style.left = '0px';
-
+    leftSwitchSubject();
 }
 
 function rightSwitchRank() {
     subject = 'general'
     const btn = document.getElementById('btn-rank');
     btn.style.left = '157px';
+    leftSwitchSubject();
 }
 
 function leftSwitchSubject() {
     const btn = document.getElementById('btn-subject');
     btn.style.left = '0px';
+    subject = 'general'
+    displayEntries();
 }
 
 function rightSwitchSubject() {
@@ -250,18 +238,16 @@ function rightSwitchSubject() {
     }
     document.querySelectorAll('#popup1 button[data-subject], #popup2 button[data-subject], ul li button').forEach(function(button) {
         button.addEventListener('click', function() {
-
             subject = this.parentElement.getAttribute('data-subject') || this.getAttribute('data-subject');
-
             displayEntries();
-            closeButton = document.querySelector('.close');
-            closeButton.click();
+            window.location.hash = '';
+            btn.style.left = '157px';
         });
     });
 }
 
 async function instantSearch() {
-    const searchTerm = document.querySelector('.search-input').value.trim().toLowerCase();
+    searchTerm = document.querySelector('.search-input').value.trim().toLowerCase();
     const rbody = document.getElementById('unvListin');
 
     if (!rbody) {
@@ -269,24 +255,28 @@ async function instantSearch() {
         return;
     }
 
-    rbody.innerHTML = ''; // Clear previous results
+    rbody.innerHTML = '';
 
     if (searchTerm === '') {
-        displayEntriesList(); // Display all data if search term is empty
+        displayEntriesList();
+        createPagination(1);  // Reset pagination when search term is cleared
         return;
     }
 
-    // Filter QS and THE universities
     const searchResults = rankingTypeData.entries.filter(entry => 
         entry.name.toLowerCase().includes(searchTerm)
     );
 
-    // Filter KZ universities directly from the kzUniversitiesData array
     const searchResultsKZ = kzUniversitiesData.filter(entry => 
         entry.name.toLowerCase().includes(searchTerm)
     );
 
-    let r = pageIndex * 10; // Reset rank counter
+    let filteredUniversities = searchResults.length + searchResultsKZ.length;
+    totalPages = Math.ceil(filteredUniversities / itemsPerPage);
+
+    createPagination(1);  // Update pagination based on the search results
+
+    let r = 0;
 
     if (searchResults.length > 0) {
         searchResults.forEach(entry => {
@@ -328,11 +318,18 @@ async function instantSearch() {
             row.appendChild(rtable);
             rbody.appendChild(row);
         });
-    } else if (searchResults.length === 0 && searchResultsKZ.length === 0) {
-        // No results found
-        const noResultsRow = document.createElement('div');
-        noResultsRow.className = "no-results";
-        noResultsRow.innerHTML = `<p>No results found for "${searchTerm}".</p>`;
-        rbody.appendChild(noResultsRow);
     }
+
+    const separator = document.createElement('hr');
+    rbody.appendChild(separator);
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.querySelector('.search-input');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', instantSearch);
+    } else {
+        console.error('Element with class "search-input" not found.');
+    }
+});
