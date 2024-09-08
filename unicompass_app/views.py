@@ -11,9 +11,6 @@ from .models import *
 def index(request):
     return render(request, "unicompass_app/listing.html")
 
-def exp(request):
-    return render(request, "unicompass_app/listing.html")
-
 def qs_universities_list(request):
     # Get parameters from the URL
     subject_name = request.GET.get('subject', 'general')  # Default to 'general' if no subject is provided
