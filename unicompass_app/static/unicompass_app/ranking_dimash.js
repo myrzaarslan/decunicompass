@@ -3,23 +3,31 @@ let rankingTypeData = [];
 let kzUniversitiesData = [];
 let pageIndex = 0;
 let totalUniversities;
-let totalPages;
+let totalUniversitiesKZ;
+let totalPages = 0;
 let itemsPerPage;
 let subject = 'general';
 let searchTerm = ''; // Added this variable to keep track of the search term
 
 async function countPages() {
     const url = fetchData();
+    const urlKZ = fetchKZUniversities();
 
     try {
         const response = await fetch(url);
         const data = await response.json();
 
         totalUniversities = data.total_records;
-        totalPages = data.total_pages;
         itemsPerPage = data.items_per_page;
+        temp = totalUniversities + totalUniversitiesKZ;
+
+        while (temp % itemsPerPage != 0) {
+            temp++;
+        }
+        totalPages = temp / itemsPerPage; // if 51 / 10
 
         console.log(`Total Records: ${totalUniversities}, Total Pages: ${totalPages}, Items Per Page: ${itemsPerPage}`);
+        console.log(`Total Records KZ: ${totalUniversitiesKZ}, Total Pages: ${itemsPerPage}`);
 
         createPagination(1);  // Initialize pagination with the first page
     } catch (error) {
@@ -43,6 +51,8 @@ async function fetchKZUniversities() {
         const data = await response.json();
 
         if (!data.data) throw new Error("No KZ data found");
+
+        totalUniversitiesKZ = data.total_records;
 
         return data.data.map(entry => ({
             name: entry.title
@@ -151,11 +161,18 @@ function displayEntriesList() {
         rbody.appendChild(row);
     });
 
+    if (r == totalUniversities) {
+        displayEntriesListKZ(r);
+    }
+}
+
+function displayEntriesListKZ(r) {
+    const rbody = document.getElementById('unvListin');
+    r++;
     const separator = document.createElement('hr');
     rbody.appendChild(separator);
-
     kzUniversitiesData.forEach(entry => {
-        r++;
+        
         const row = document.createElement('div');
         const rtable = document.createElement('table');
         rtable.className = "University";

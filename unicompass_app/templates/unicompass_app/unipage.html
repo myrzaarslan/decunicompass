@@ -3,8 +3,128 @@
 
 {% block body %}
 <div class="card">
-    <div class="card-body text-center">
-        Loh
+    <div class="card-header">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Ranking</a>
+            <form class="form-inline my-2 my-lg-0 ml-auto">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </nav>
+    </div>
+    
+    <div class="card-body">
+        <h2 class="card-title text-center">{{ uni.title }}</h2>
+        
+        <ul class="nav nav-tabs justify-content-center mb-3">
+            <li class="nav-item">
+                <a class="nav-link active" href="#overview">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#majors">Majors</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#admissions">Admissions</a>
+            </li>
+        </ul>
+        
+        <div id="overview" class="tab-content">
+            <div class="grid-container">
+                <div class="grid-image">
+                    <img src="{{ uni.img }}" alt="{{ uni.title }}" class="img-thumbnail" width="200" height="200">
+                </div>
+                <div class="grid-title">
+                    <h2>{{ uni.title }}</h2>
+                </div>
+                <div class="grid-description">
+                    <p>{{ uni.description }}</p>
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="{{ uni.source_link }}">Link to Uni</a>
+            </div>
+            <div class="text-center">
+                <p>QS Rank: {{ qs_rank }}</p>
+                <p>THE Rank: {{ the_rank }}</p>
+            </div>
+            <div id="staticMap" style="width: 70%; height: 400px;"></div>
+        </div>
+        
+        <div id="majors" class="tab-content" style="display: none;">
+            <!-- Content for Majors tab -->
+            <h3>Majors offered:</h3>
+            <ul>
+                {% for major in uni.majors %}
+                    <li>{{ major }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div id="admissions" class="tab-content" style="display: none;">
+            <!-- Content for Admissions tab -->
+            <h3>Admissions Information:</h3>
+            <p>{{ uni.admissions_info }}</p>
+        </div>
     </div>
 </div>
+
+<script src="https://mapgl.2gis.com/api/js/v1"></script>
+<script>
+    // Simple JavaScript to handle tab switching
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+            document.querySelector(this.getAttribute('href')).style.display = 'block';
+            document.querySelectorAll('.nav-link').forEach(navLink => {
+                navLink.classList.remove('active');
+            });
+            this.classList.add('active');
+        });
+    });
+
+    let longitude = 71.398570871052
+    let latitude = 51.09034852272567
+    // Initialize the 2GIS MapGL API
+    const staticMap = new mapgl.Map('staticMap', {
+        center: [longitude, latitude], // Set the coordinates of the university
+        zoom: 16, // Set the desired zoom level
+        key: '30d26425-fcaa-4926-bcf9-cf725a976d8b' // Replace with your API key
+    });
+    
+    // Add a marker at the university location
+    const marker = new mapgl.Marker(map, {
+        coordinates: [longitude, latitude]
+    });
+</script>
+
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: auto auto;
+        gap: 20px;
+        align-items: start;
+        justify-items: start;
+    }
+
+    .grid-image {
+        grid-row: 1 / span 2; /* Span two rows */
+        justify-self: start;
+    }
+
+    .grid-title {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: start;
+    }
+
+    .grid-description {
+        grid-column: 2;
+        grid-row: 2;
+        justify-self: start;
+    }
+</style>
 {% endblock %}

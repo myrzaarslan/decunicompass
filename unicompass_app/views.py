@@ -121,8 +121,9 @@ def kz_universities_list(request):
 
     return JsonResponse(response)
 
-def university(request, uni):
-    return render(request, "unicompass_app/unipage.html")
+def university(request):
+    uni = QS_University.objects.get(nid=295109)
+    return render(request, "unicompass_app/unipage.html", { "uni": uni })
 
 def login_view(request):
     if request.method == "POST":
