@@ -18,16 +18,17 @@
         
         <ul class="nav nav-tabs justify-content-center mb-3">
             <li class="nav-item">
-                <a class="nav-link active" href="#overview">Overview</a>
+                <a class="nav-link" href="#overview" onclick="showSection('overview')">Overview</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#majors">Majors</a>
+                <a class="nav-link" href="#majors" onclick="showSection('majors')">Majors</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#admissions">Admissions</a>
+                <a class="nav-link" href="#admissions" onclick="showSection('admissions')">Admissions</a>
             </li>
         </ul>
-        
+
+        <!-- Overview section -->
         <div id="overview" class="tab-content">
             <div class="grid-container">
                 <div class="grid-image">
@@ -41,27 +42,84 @@
                 </div>
             </div>
             <div class="text-center">
-                <a href="{{ uni.source_link }}">Link to Uni</a>
+                <a href="{{ uni.link }}">Link to Uni</a>
             </div>
             <div class="text-center">
-                <p>QS Rank: {{ qs_rank }}</p>
+                <p>QS Rank: {{ uni.rank }}</p>
                 <p>THE Rank: {{ the_rank }}</p>
             </div>
             <div id="staticMap" style="width: 70%; height: 400px;"></div>
         </div>
-        
+
+        <!-- Majors section -->
         <div id="majors" class="tab-content" style="display: none;">
-            <!-- Content for Majors tab -->
-            <h3>Majors offered:</h3>
-            <ul>
-                {% for major in uni.majors %}
-                    <li>{{ major }}</li>
-                {% endfor %}
-            </ul>
+            <div style="display: flex; justify-content: space-between;">
+                <!-- QS Table -->
+                <div>
+                    <h3>QS Majors</h3>
+                    <table class="table table-striped table-dark" border="1">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Major</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>ELCE</td>
+                                <td>0.31</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>CS</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>pENIS</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- THE Table -->
+                <div>
+                    <h3>THE Majors</h3>
+                    <table class="table table-striped table-dark" border="1">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Major</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>ELCE</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>CS</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>pENIS</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        
+
+        <!-- Admissions section -->
         <div id="admissions" class="tab-content" style="display: none;">
-            <!-- Content for Admissions tab -->
             <h3>Admissions Information:</h3>
             <p>{{ uni.admissions_info }}</p>
         </div>
@@ -70,21 +128,6 @@
 
 <script src="https://mapgl.2gis.com/api/js/v1"></script>
 <script>
-    // Simple JavaScript to handle tab switching
-    document.querySelectorAll('.nav-link').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.style.display = 'none';
-            });
-            document.querySelector(this.getAttribute('href')).style.display = 'block';
-            document.querySelectorAll('.nav-link').forEach(navLink => {
-                navLink.classList.remove('active');
-            });
-            this.classList.add('active');
-        });
-    });
-
     let longitude = 71.398570871052
     let latitude = 51.09034852272567
     // Initialize the 2GIS MapGL API
@@ -98,6 +141,14 @@
     const marker = new mapgl.Marker(map, {
         coordinates: [longitude, latitude]
     });
+
+    function showSection(section) {
+        document.getElementById('overview').style.display = 'none';
+        document.getElementById('majors').style.display = 'none';
+        document.getElementById('admissions').style.display = 'none';
+
+        document.getElementById(section).style.display = 'block';
+    }
 </script>
 
 <style>

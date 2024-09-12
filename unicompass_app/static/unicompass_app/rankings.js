@@ -87,8 +87,10 @@ async function getEntries() {
 
         return data.data.map(entry => ({
             rank: entry.rank,
-            name: entry.title,
-            overall_score: entry.overall_score
+            title: entry.title,
+            overall_score: entry.overall_score,
+            nid: entry.nid,
+            link_id: entry.link_id
         }));
     } catch (error) {
         console.error('Error fetching some universities data:', error);
@@ -147,16 +149,21 @@ function displayEntriesList() {
         const rtable = document.createElement('table');
         rtable.className = "University";
         row.className = "custom-button";
-        rtable.innerHTML = `
-            <thead>
+
+        // Add event listener for redirect
+        row.addEventListener('click', () => {
+            window.location.href = `/unipage/${entry.nid}`; // Redirect to the university page with its ID
+        });
+
+        rtable.innerHTML = 
+            `<thead>
                 <tr>
                     <th>${r}</th>
-                    <th>${entry.name}</th>
+                    <th>${entry.title}</th>
                     <th>${entry.rank}</th>
                     <th>${entry.overall_score}</th>
                 </tr>
-            </thead>
-        `;
+            </thead>`;
         row.appendChild(rtable);
         rbody.appendChild(row);
     });
@@ -177,14 +184,19 @@ function displayEntriesListKZ(r) {
         const rtable = document.createElement('table');
         rtable.className = "University";
         row.className = "custom-button";
-        rtable.innerHTML = `
-            <thead>
+
+        // Add event listener for redirect
+        row.addEventListener('click', () => {
+            window.location.href = `/unipage/?id=${entry.id}`; // Redirect to the university page with its ID
+        });
+
+        rtable.innerHTML = 
+            `<thead>
                 <tr>
                     <th>${r}</th>
                     <th>${entry.name}</th>
                 </tr>
-            </thead>
-        `;
+            </thead>`;
         row.appendChild(rtable);
         rbody.appendChild(row);
         r++;

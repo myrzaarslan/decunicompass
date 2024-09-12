@@ -12,6 +12,16 @@ class University(models.Model):
         return self.title
 
 class THE_University(models.Model):
+    # Attributes for Page
+    description = models.CharField(max_length=1000, blank=True, null=True)
+    link = models.CharField(max_length=256, blank=True, null=True)
+    img = models.CharField(max_length=256, blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+
+    # Common ID for THE and QS
+    link_id = models.IntegerField(blank=True, null=True)
+
     rank = models.CharField(max_length=10)
     
     # Subject-Specific Rankings
@@ -28,15 +38,25 @@ class THE_University(models.Model):
 
     # Other Fields
     title = models.CharField(max_length=255)
-    overall_score = models.CharField(max_length=10)
+    overall_score = models.CharField(max_length=10, blank=True, null=True)
     nid = models.IntegerField()
-    location = models.CharField(max_length=255)
-    subjects_offered = models.TextField()
+    location = models.CharField(max_length=255, blank=True, null=True)
+    subjects_offered = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f"THE ranking; {self.name}; rank: {self.rank}"
+        return f"THE ranking; {self.title}; rank: {self.rank}"
 
 class QS_University(models.Model):
+    # Attributes for Page
+    description = models.CharField(max_length=1000, blank=True, null=True)
+    link = models.CharField(max_length=256, blank=True, null=True)
+    img = models.CharField(max_length=256, blank=True, null=True)
+    longitude = models.FloatField(blank=True, null=True)
+    latitude = models.FloatField(blank=True, null=True)
+
+    # Common ID for THE and QS
+    link_id = models.IntegerField(blank=True, null=True)
+
     title = models.CharField(max_length=256)
     overall_score = models.FloatField(blank=True, null=True)
     rank = models.PositiveIntegerField(blank=True, null=True)
@@ -95,8 +115,8 @@ class QS_University(models.Model):
     rank_vet_sci = models.CharField(max_length=10, blank=True, null=True)
 
     # Location and Unique Fields
-    city = models.CharField(max_length=255)
-    country = models.CharField(max_length=255)
+    city = models.CharField(max_length=255, blank=True, null=True)
+    country = models.CharField(max_length=255, blank=True, null=True)
     # ID for scores
     score_nid = models.CharField(max_length=255, unique=True, blank=True, null=True)
 

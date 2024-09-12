@@ -11,6 +11,75 @@ from .models import *
 def index(request):
     return render(request, "unicompass_app/listing.html")
 
+def the_university_detail(request, nid):
+    university = THE_University.objects.get(nid=nid)
+
+    data = {
+        'title': university.title,
+        'rank': university.rank,
+        'rank_arts': university.rank_arts,
+        'rank_eng': university.rank_eng,
+        'rank_bus': university.rank_bus,
+        'rank_law': university.rank_law,
+        'rank_clin': university.rank_clin,
+        'rank_life': university.rank_life,
+        'rank_comp': university.rank_comp,
+        'rank_phys': university.rank_phys,
+        'rank_edu': university.rank_edu,
+        'rank_psych': university.rank_psych,
+        'description': university.description,
+        'link': university.link,
+        'img': university.img,
+        'latitude': university.latitude,
+        'longitude': university.longitude,
+        'overall_score': university.overall_score,
+        'location': university.location,
+        'subjects_offered': university.subjects_offered,
+    }
+    return JsonResponse(data)
+
+# API for an individual QS university by its 'nid' or 'id'
+def qs_university_detail(request, nid):
+    university = QS_University.objects.get(nid=nid)
+
+    data = {
+        'title': university.title,
+        'rank': university.rank,
+        'rank_arts_humanities': university.rank_arts_humanities,
+        'rank_arts': university.rank_arts,
+        'rank_linguistics': university.rank_linguistics,
+        'rank_music': university.rank_music,
+        'rank_theology': university.rank_theology,
+        'rank_archaeology': university.rank_archaeology,
+        'rank_architecture': university.rank_architecture,
+        'rank_art_design': university.rank_art_design,
+        'rank_classics': university.rank_classics,
+        'rank_english': university.rank_english,
+        'rank_history': university.rank_history,
+        'rank_modern_languages': university.rank_modern_languages,
+        'rank_philosophy': university.rank_philosophy,
+        'rank_eng_tech': university.rank_eng_tech,
+        'rank_chem_eng': university.rank_chem_eng,
+        'rank_civil_eng': university.rank_civil_eng,
+        'rank_comp_sci': university.rank_comp_sci,
+        'rank_data_sci': university.rank_data_sci,
+        'rank_elec_eng': university.rank_elec_eng,
+        'rank_mech_eng': university.rank_mech_eng,
+        'rank_nat_sci': university.rank_nat_sci,
+        'rank_chemistry': university.rank_chemistry,
+        'rank_env_sci': university.rank_env_sci,
+        'rank_geography': university.rank_geography,
+        'description': university.description,
+        'link': university.link,
+        'img': university.img,
+        'latitude': university.latitude,
+        'longitude': university.longitude,
+        'overall_score': university.overall_score,
+        'city': university.city,
+        'country': university.country,
+    }
+    return JsonResponse(data)
+
 def qs_universities_list(request):
     # Get parameters from the URL
     subject_name = request.GET.get('subject', 'general')  # Default to 'general' if no subject is provided
@@ -44,7 +113,7 @@ def qs_universities_list(request):
     universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
 
     # Prepare the response data
-    data = list(universities.values('id', 'rank', 'title', 'overall_score', 'city', 'country'))
+    data = list(universities.values('id', 'nid', 'link_id', 'rank', 'title', 'overall_score', 'city', 'country'))
 
     response = {
         "current_page": page + 1,
@@ -80,7 +149,7 @@ def the_universities_list(request):
     universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
 
     # Prepare the response data
-    data = list(universities.values('id', 'rank', 'title', 'overall_score', 'nid', 'location', 'subjects_offered'))
+    data = list(universities.values('id', 'nid', 'link_id', 'rank', 'title', 'overall_score', 'nid', 'location', 'subjects_offered'))
 
     response = {
         "current_page": page + 1,
@@ -118,9 +187,34 @@ def kz_universities_list(request):
 
     return JsonResponse(response)
 
-def university(request):
-    uni = QS_University.objects.get(nid=295109)
-    return render(request, "unicompass_app/unipage.html", { "uni": uni })
+def university(request, nid):
+    # Check if university exists in either QS or THE models by link_id or nid
+
+    # First check based on link_id
+    qs_uni = QS_University.objects.filter(link_id=nid).first()
+    the_uni = THE_University.objects.filter(link_id=nid).first()
+
+    if not qs_uni and not the_uni:
+        # If no match by link_id, check by nid
+        qs_uni = QS_University.objects.filter(nid=nid).first()
+        the_uni = THE_University.objects.filter(nid=nid).first()
+
+    # Determine which university to use
+    if qs_uni:
+        uni = qs_uni
+        the_rank = THE_University.objects.filter(link_id=qs_uni.link_id).first().rank if qs_uni.link_id else None
+    elif the_uni:
+        uni = the_uni
+        the_rank = the_uni.rank
+    else:
+        # If neither QS nor THE university exists, return a 404 page
+        return render(request, "404.html", {"message": "University not found"})
+
+    # Render the university page with the details
+    return render(request, "unicompass_app/unipage.html", {
+        "uni": uni,
+        "the_rank": the_rank,
+    })
 
 def login_view(request):
     if request.method == "POST":
