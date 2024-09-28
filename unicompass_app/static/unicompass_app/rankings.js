@@ -37,9 +37,9 @@ async function countPages() {
 
 function fetchData() {
     if (rankingType == "qs") {
-        return `/api/qs_universities/?page=${pageIndex}&subject=${subject}`;
+        return `/api/uni/qs/`;
     } else if (rankingType == "the") {
-        return `/api/the_universities/?page=${pageIndex}&subject=${subject}`;
+        return `/api/uni/the/?page=${pageIndex}&subject=${subject}`;
     } else {
         return "";
     }
@@ -85,13 +85,23 @@ async function getEntries() {
 
         if (!data.data) throw new Error("No data found");
 
-        return data.data.map(entry => ({
-            rank: entry.rank,
-            title: entry.title,
-            overall_score: entry.overall_score,
-            nid: entry.nid,
-            link_id: entry.link_id
-        }));
+        if (rankingType == 'qs') {
+            
+            return data.data.map(entry => ({
+                rank: entry.qs_rank,
+                title: entry.qs_title,
+                overall_score: entry.qs_overall_score,
+                nid: entry.qs_nid,
+            }));
+        } else if (rankingType == 'the') {
+            
+            return data.data.map(entry => ({
+                rank: entry.the_rank,
+                title: entry.the_title,
+                overall_score: entry.the_overall_score,
+                nid: entry.the_nid,
+            }));
+        }
     } catch (error) {
         console.error('Error fetching some universities data:', error);
         throw error;

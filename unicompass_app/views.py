@@ -6,114 +6,113 @@ from django.urls import reverse
 import json
 from django.core.paginator import Paginator
 from .models import *
+from django.db.models import Q
+from django.core.serializers import serialize
 
 # Create your views here.
 def index(request):
     return render(request, "unicompass_app/listing.html")
 
+# API for an individual THE university by its 'nid'
 def the_university_detail(request, nid):
-    university = THE_University.objects.get(nid=nid)
+    university = UniUni.objects.get(the_nid=nid)
 
     data = {
-        'title': university.title,
-        'rank': university.rank,
-        'rank_arts': university.rank_arts,
-        'rank_eng': university.rank_eng,
-        'rank_bus': university.rank_bus,
-        'rank_law': university.rank_law,
-        'rank_clin': university.rank_clin,
-        'rank_life': university.rank_life,
-        'rank_comp': university.rank_comp,
-        'rank_phys': university.rank_phys,
-        'rank_edu': university.rank_edu,
-        'rank_psych': university.rank_psych,
+        'title': university.the_title,
+        'rank': university.the_rank,
+        'rank_arts': university.the_rank_arts,
+        'rank_eng': university.the_rank_eng,
+        'rank_bus': university.the_rank_bus,
+        'rank_law': university.the_rank_law,
+        'rank_clin': university.the_rank_clin,
+        'rank_life': university.the_rank_life,
+        'rank_comp': university.the_rank_comp,
+        'rank_phys': university.the_rank_phys,
+        'rank_edu': university.the_rank_edu,
+        'rank_psych': university.the_rank_psych,
         'description': university.description,
         'link': university.link,
         'img': university.img,
         'latitude': university.latitude,
         'longitude': university.longitude,
-        'overall_score': university.overall_score,
-        'location': university.location,
-        'subjects_offered': university.subjects_offered,
+        'overall_score': university.the_overall_score,
+        'location': university.the_location,
+        'subjects_offered': university.the_subjects_offered,
     }
     return JsonResponse(data)
 
-# API for an individual QS university by its 'nid' or 'id'
+# API for an individual QS university by its 'nid'
 def qs_university_detail(request, nid):
-    university = QS_University.objects.get(nid=nid)
+    university = UniUni.objects.get(qs_nid=nid)
 
     data = {
-        'title': university.title,
-        'rank': university.rank,
-        'rank_arts_humanities': university.rank_arts_humanities,
-        'rank_arts': university.rank_arts,
-        'rank_linguistics': university.rank_linguistics,
-        'rank_music': university.rank_music,
-        'rank_theology': university.rank_theology,
-        'rank_archaeology': university.rank_archaeology,
-        'rank_architecture': university.rank_architecture,
-        'rank_art_design': university.rank_art_design,
-        'rank_classics': university.rank_classics,
-        'rank_english': university.rank_english,
-        'rank_history': university.rank_history,
-        'rank_modern_languages': university.rank_modern_languages,
-        'rank_philosophy': university.rank_philosophy,
-        'rank_eng_tech': university.rank_eng_tech,
-        'rank_chem_eng': university.rank_chem_eng,
-        'rank_civil_eng': university.rank_civil_eng,
-        'rank_comp_sci': university.rank_comp_sci,
-        'rank_data_sci': university.rank_data_sci,
-        'rank_elec_eng': university.rank_elec_eng,
-        'rank_mech_eng': university.rank_mech_eng,
-        'rank_nat_sci': university.rank_nat_sci,
-        'rank_chemistry': university.rank_chemistry,
-        'rank_env_sci': university.rank_env_sci,
-        'rank_geography': university.rank_geography,
+        'title': university.qs_title,
+        'rank': university.qs_rank,
+        'rank_arts_humanities': university.qs_rank_arts_humanities,
+        'rank_arts': university.qs_rank_arts,
+        'rank_linguistics': university.qs_rank_linguistics,
+        'rank_music': university.qs_rank_music,
+        'rank_theology': university.qs_rank_theology,
+        'rank_archaeology': university.qs_rank_archaeology,
+        'rank_architecture': university.qs_rank_architecture,
+        'rank_art_design': university.qs_rank_art_design,
+        'rank_classics': university.qs_rank_classics,
+        'rank_english': university.qs_rank_english,
+        'rank_history': university.qs_rank_history,
+        'rank_modern_languages': university.qs_rank_modern_languages,
+        'rank_philosophy': university.qs_rank_philosophy,
+        'rank_eng_tech': university.qs_rank_eng_tech,
+        'rank_chem_eng': university.qs_rank_chem_eng,
+        'rank_civil_eng': university.qs_rank_civil_eng,
+        'rank_comp_sci': university.qs_rank_comp_sci,
+        'rank_data_sci': university.qs_rank_data_sci,
+        'rank_elec_eng': university.qs_rank_elec_eng,
+        'rank_mech_eng': university.qs_rank_mech_eng,
+        'rank_nat_sci': university.qs_rank_nat_sci,
+        'rank_chemistry': university.qs_rank_chemistry,
+        'rank_env_sci': university.qs_rank_env_sci,
+        'rank_geography': university.qs_rank_geography,
         'description': university.description,
         'link': university.link,
         'img': university.img,
         'latitude': university.latitude,
         'longitude': university.longitude,
-        'overall_score': university.overall_score,
-        'city': university.city,
-        'country': university.country,
+        'overall_score': university.qs_overall_score,
+        'city': university.qs_city,
+        'country': university.qs_country,
     }
     return JsonResponse(data)
 
 def qs_universities_list(request):
-    # Get parameters from the URL
-    subject_name = request.GET.get('subject', 'general')  # Default to 'general' if no subject is provided
+    subject_name = request.GET.get('subject', 'general')
     page = int(request.GET.get('page', 0))
     items_per_page = int(request.GET.get('items_per_page', 10))
 
-    # List of all valid subject fields in the QS_University model
     valid_subject_fields = [
-        'rank_arts_humanities', 'rank_arts', 'rank_linguistics', 'rank_music', 'rank_theology',
-        'rank_archaeology', 'rank_architecture', 'rank_art_design', 'rank_classics', 'rank_english',
-        'rank_history', 'rank_art_history', 'rank_modern_languages', 'rank_performing_arts', 
-        'rank_philosophy', 'rank_eng_tech', 'rank_chem_eng', 'rank_civil_eng', 'rank_comp_sci', 
-        'rank_data_sci', 'rank_elec_eng', 'rank_pet_eng', 'rank_mech_eng', 'rank_mining_eng', 
-        'rank_nat_sci', 'rank_chemistry', 'rank_earth_marine_sci', 'rank_env_sci', 'rank_geography', 
-        'rank_geology', 'rank_geophysics', 'rank_materials_sci', 'rank_math', 'rank_physics_astronomy', 
-        'rank_life_sci', 'rank_agriculture', 'rank_anatomy', 'rank_bio_sci', 'rank_dentistry', 
-        'rank_medicine', 'rank_pharmacy', 'rank_nursing', 'rank_psychology', 'rank_vet_sci'
+        'qs_rank_arts_humanities', 'qs_rank_arts', 'qs_rank_linguistics', 'qs_rank_music', 'qs_rank_theology',
+        'qs_rank_archaeology', 'qs_rank_architecture', 'qs_rank_art_design', 'qs_rank_classics', 'qs_rank_english',
+        'qs_rank_history', 'qs_rank_art_history', 'qs_rank_modern_languages', 'qs_rank_performing_arts', 
+        'qs_rank_philosophy', 'qs_rank_eng_tech', 'qs_rank_chem_eng', 'qs_rank_civil_eng', 'qs_rank_comp_sci', 
+        'qs_rank_data_sci', 'qs_rank_elec_eng', 'qs_rank_pet_eng', 'qs_rank_mech_eng', 'qs_rank_mining_eng', 
+        'qs_rank_nat_sci', 'qs_rank_chemistry', 'qs_rank_earth_marine_sci', 'qs_rank_env_sci', 'qs_rank_geography', 
+        'qs_rank_geology', 'qs_rank_geophysics', 'qs_rank_materials_sci', 'qs_rank_math', 'qs_rank_physics_astronomy', 
+        'qs_rank_life_sci', 'qs_rank_agriculture', 'qs_rank_anatomy', 'qs_rank_bio_sci', 'qs_rank_dentistry', 
+        'qs_rank_medicine', 'qs_rank_pharmacy', 'qs_rank_nursing', 'qs_rank_psychology', 'qs_rank_vet_sci'
     ]
 
-    # Validate the subject_name and filter universities
-    if subject_name in valid_subject_fields:
-        # Filter universities that have a ranking for the specified subject
-        universities = QS_University.objects.filter(**{subject_name + '__isnull': False}).order_by(subject_name)
-    else:
-        # Default to all universities if subject is 'general' or invalid
-        universities = QS_University.objects.all().order_by('rank')
+    # Base queryset with non-empty titles
+    base_queryset = UniUni.objects.exclude(Q(qs_title__isnull=True) | Q(qs_title=''))
 
-    # Pagination
+    if subject_name in valid_subject_fields:
+        universities = base_queryset.filter(**{subject_name + '__isnull': False}).order_by(subject_name)
+    else:
+        universities = base_queryset.order_by('qs_rank')
+
     total_records = universities.count()
     total_pages = (total_records + items_per_page - 1) // items_per_page
     universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
 
-    # Prepare the response data
-    data = list(universities.values('id', 'nid', 'link_id', 'rank', 'title', 'overall_score', 'city', 'country'))
+    data = list(universities.values('qs_nid', 'qs_rank', 'qs_title', 'qs_overall_score', 'qs_city', 'qs_country'))
 
     response = {
         "current_page": page + 1,
@@ -126,30 +125,28 @@ def qs_universities_list(request):
     return JsonResponse(response)
 
 def the_universities_list(request):
-    # Get parameters from the URL
-    subject_name = request.GET.get('subject', 'general')  # Default to 'general' if no subject is provided
+    subject_name = request.GET.get('subject', 'general')
     page = int(request.GET.get('page', 0))
     items_per_page = int(request.GET.get('items_per_page', 10))
 
-    # List of all valid subject fields in the THE_University model
     valid_subject_fields = [
-        'rank_arts', 'rank_bus', 'rank_clin', 'rank_comp', 'rank_edu', 'rank_eng', 
-        'rank_law', 'rank_life', 'rank_phys', 'rank_psych'
+        'the_rank_arts', 'the_rank_bus', 'the_rank_clin', 'the_rank_comp', 'the_rank_edu', 'the_rank_eng', 
+        'the_rank_law', 'the_rank_life', 'the_rank_phys', 'the_rank_psych'
     ]
 
-    # Filter universities based on the subject
-    if subject_name != 'general':
-        universities = THE_University.objects.filter(**{subject_name + '__isnull': False}).order_by(subject_name)
-    else:
-        universities = THE_University.objects.all()
+    # Base queryset with non-empty titles
+    base_queryset = UniUni.objects.exclude(Q(the_title__isnull=True) | Q(the_title=''))
 
-    # Pagination
+    if subject_name in valid_subject_fields:
+        universities = base_queryset.filter(**{subject_name + '__isnull': False}).order_by(subject_name)
+    else:
+        universities = base_queryset.order_by('the_rank')
+
     total_records = universities.count()
     total_pages = (total_records + items_per_page - 1) // items_per_page
     universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
 
-    # Prepare the response data
-    data = list(universities.values('id', 'nid', 'link_id', 'rank', 'title', 'overall_score', 'nid', 'location', 'subjects_offered'))
+    data = list(universities.values('the_nid', 'the_rank', 'the_title', 'the_overall_score', 'the_location', 'the_subjects_offered'))
 
     response = {
         "current_page": page + 1,
@@ -161,21 +158,58 @@ def the_universities_list(request):
 
     return JsonResponse(response)
 
+def all_university_details(request):
+    university_id = request.GET.get('id')
+    
+    if university_id:
+        try:
+            university = UniUni.objects.get(id=university_id)
+            data = serialize('python', [university])[0]['fields']
+            data['id'] = university.id  # Add the id field
+            return JsonResponse(data)
+        except UniUni.DoesNotExist:
+            return JsonResponse({"error": "University not found"}, status=404)
+    else:
+        page = int(request.GET.get('page', 0))
+        items_per_page = int(request.GET.get('items_per_page', 10))
+
+        universities = UniUni.objects.all()
+        total_records = universities.count()
+        total_pages = (total_records + items_per_page - 1) // items_per_page
+        universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
+
+        data = []
+        for university in universities:
+            uni_data = serialize('python', [university])[0]['fields']
+            uni_data['id'] = university.id  # Add the id field
+            data.append(uni_data)
+
+        response = {
+            "current_page": page + 1,
+            "total_pages": total_pages,
+            "items_per_page": items_per_page,
+            "total_records": total_records,
+            "data": data
+        }
+
+        return JsonResponse(response)
+
 def kz_universities_list(request):
-    # Get pagination parameters from the URL
     page = int(request.GET.get('page', 0))
     items_per_page = int(request.GET.get('items_per_page', 10))
 
-    # Get all universities
-    universities = University.objects.all().order_by('title')
-
-    # Pagination logic
+    # Filter universities with non-null and non-empty kz_title
+    universities = UniUni.objects.exclude(Q(kz_title__isnull=True) | Q(kz_title=''))
+    
     total_records = universities.count()
     total_pages = (total_records + items_per_page - 1) // items_per_page
     universities = universities[(page * items_per_page):(page * items_per_page + items_per_page)]
 
-    # Prepare the response data
-    data = list(universities.values('id', 'title'))
+    data = []
+    for university in universities:
+        uni_data = serialize('python', [university])[0]['fields']
+        uni_data['id'] = university.id  # Add the id field
+        data.append(uni_data)
 
     response = {
         "current_page": page + 1,
@@ -186,7 +220,6 @@ def kz_universities_list(request):
     }
 
     return JsonResponse(response)
-
 def university(request, nid):
     # Check if university exists in either QS or THE models by link_id or nid
 
