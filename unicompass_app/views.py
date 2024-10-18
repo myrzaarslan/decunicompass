@@ -13,6 +13,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 import logging
 
+#TODO compare, 3rd page, ai integration
+
 # Create your views here.
 def index(request):
     return render(request, "unicompass_app/listing.html")
@@ -502,6 +504,8 @@ def kz_universities_list(request):
 def university(request, id):
     uni = UniUni.objects.get(id=id)
 
+    location = uni.qs_city
+
     if not uni.the_title and not uni.qs_title:
         title = uni.kz_title
     elif not uni.the_title and uni.qs_title:
@@ -593,6 +597,7 @@ def university(request, id):
         "scholarships_by_year": scholarships_by_year,
         "qs_rankings": qs_rankings,
         "the_rankings": the_rankings,
+        "location": location,
     })
 
 logger = logging.getLogger(__name__)
@@ -642,6 +647,7 @@ def chat_view(request):
 
     # For non-POST requests
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
 def login_view(request):
     if request.method == "POST":
 
