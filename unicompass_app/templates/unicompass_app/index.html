@@ -1,0 +1,139 @@
+{% extends "unicompass_app/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="container mt-4 custom-container text-center">
+    <!-- Your existing HTML content -->
+        <div class="container">
+            <h1 class="text-center">University Rankings</h1>
+            <div class="text-center mb-3">
+                <input type="text" id="searchBar" class="form-control" placeholder="Search for a university" onkeyup="instantSearch()">
+            </div>
+            <div class="text-center">
+                <button class="btn btn-dark" onclick="switchSource('topuniversities')">QS</button>
+                <button class="btn btn-dark" onclick="switchSource('timeshighereducation')">THE</button>
+            </div>
+            <br>
+            <!-- TopUniversities Modal -->
+            <div class="modal fade" id="modal-topuniversities" tabindex="-1" role="dialog" aria-labelledby="modalLabelTopUniversities" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-center" id="modalLabelTopUniversities">TopUniversities Subjects</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-unstyled">
+                                <li><h6 class="modal-title text-center" data-subject="qs_rank" onclick="displayEntries(this)">General</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_eng_tech" onclick="displayEntries(this)">Engineering & Technologies</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_chem_eng" onclick="displayEntries(this)">Chemical Engineering</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_civil_eng" onclick="displayEntries(this)">Civil Engineering</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_comp_sci" onclick="displayEntries(this)">Computer Science</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_data_sci" onclick="displayEntries(this)">Data Science</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_elec_eng" onclick="displayEntries(this)">Electrical Engineering</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_pet_eng" onclick="displayEntries(this)">Petroleum Engineering</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_mech_eng" onclick="displayEntries(this)">Mechanical Engineering</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_mining_eng" onclick="displayEntries(this)">Mining Engineering</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_nat_sci" onclick="displayEntries(this)">Natural Sciences</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_chemistry" onclick="displayEntries(this)">Chemistry</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_earth_marine_sci" onclick="displayEntries(this)">Earth & Marine Sciences</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_env_sci" onclick="displayEntries(this)">Environmental Sciences</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_geography" onclick="displayEntries(this)">Geography</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_geology" onclick="displayEntries(this)">Geology</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_geophysics" onclick="displayEntries(this)">Geophysics</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_materials_sci" onclick="displayEntries(this)">Materials Science</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_math" onclick="displayEntries(this)">Mathematics</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_physics_astronomy" onclick="displayEntries(this)">Physics & Astronomy</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_life_sci" onclick="displayEntries(this)">Life Sciences</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_agriculture" onclick="displayEntries(this)">Agriculture</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_anatomy" onclick="displayEntries(this)">Anatomy</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_bio_sci" onclick="displayEntries(this)">Biological Sciences</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_dentistry" onclick="displayEntries(this)">Dentistry</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_medicine" onclick="displayEntries(this)">Medicine</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_pharmacy" onclick="displayEntries(this)">Pharmacy</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_nursing" onclick="displayEntries(this)">Nursing</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_psychology" onclick="displayEntries(this)">Psychology</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_vet_sci" onclick="displayEntries(this)">Veterinary Science</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_arts_humanities" onclick="displayEntries(this)">Arts & Humanities</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_linguistics" onclick="displayEntries(this)">Linguistics</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_music" onclick="displayEntries(this)">Music</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_theology" onclick="displayEntries(this)">Theology, Divinity & Religious Studies</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_archaeology" onclick="displayEntries(this)">Archaeology</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_architecture" onclick="displayEntries(this)">Architecture & Built Environment</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_art_design" onclick="displayEntries(this)">Art & Design</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_classics" onclick="displayEntries(this)">Classics & Ancient History</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_english" onclick="displayEntries(this)">English Language and Literature</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_history" onclick="displayEntries(this)">History</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_art_history" onclick="displayEntries(this)">History of Art</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_modern_languages" onclick="displayEntries(this)">Modern Languages</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_performing_arts" onclick="displayEntries(this)">Performing Arts</h6></li>
+                                <li><h6 class="modal-title" data-subject="rank_philosophy" onclick="displayEntries(this)">Philosophy</h6></li>
+                            </ul>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- TimesHigherEducation Modal -->
+            <div class="modal fade" id="modal-timeshighereducation" tabindex="-1" role="dialog" aria-labelledby="modalLabelTimesHigherEducation" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-center" id="modalLabelTimesHigherEducation">TimesHigherEducation Subjects</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="list-unstyled">
+                                <li><h6 class="modal-title text-center" data-subject="the_rank" onclick="displayEntries(this)">General</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_arts" onclick="displayEntries(this)">Arts & Humanities</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_bus" onclick="displayEntries(this)">Business & Economics</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_psych" onclick="displayEntries(this)">Psychology</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_life" onclick="displayEntries(this)">Life Sciences</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_law" onclick="displayEntries(this)">Law</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_edu" onclick="displayEntries(this)">Education</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_comp" onclick="displayEntries(this)">Computer Science</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_clin" onclick="displayEntries(this)">Clinical, Pre-Clinical & Health</h6></li>
+                                <li><h6 class="modal-title text-center" data-subject="rank_phys" onclick="displayEntries(this)">Physical Sciences</h6></li>
+                            </ul>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="alertPlace">
+                <div id="chosenFilter" class="alert alert-dark alert-dismissible fade show text-center" role="alert">
+                    <span id="alertContent"></span> <!-- Where the alert content will be updated -->
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+            <table id="unisTable" class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Rank</th>
+                        <th scope="col">Name</th>
+                        <th id="actualRanking" scope="col"></th>
+                        <th scope="col">Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data rows will be inserted here -->
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-center">
+                <div id="loadingSpinner" class="spinner-border text-secondary" role="status" style="display: none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'unicompass_app\rankings.js' %}"></script>
+{% endblock %}
