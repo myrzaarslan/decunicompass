@@ -1,23 +1,17 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import  HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 import json
-from django.core.paginator import Paginator
 from .models import *
 from django.db.models import Q
 from django.core.serializers import serialize
-from django.db.models import Prefetch
-from django.db.models import F
 import requests
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 import logging
-
-OPENAI_API_KEY = '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'
-
 
 # Create your views here.
 def index(request):
