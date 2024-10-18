@@ -8,6 +8,16 @@ from django.core.paginator import Paginator
 from .models import *
 from django.db.models import Q
 from django.core.serializers import serialize
+from django.db.models import Prefetch
+from django.db.models import F
+import requests
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+import logging
+
+OPENAI_API_KEY = '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'
+
 
 # Create your views here.
 def index(request):
@@ -495,35 +505,149 @@ def kz_universities_list(request):
 
     return JsonResponse(response)
 
-def university(request, nid):
-    # Check if university exists in either QS or THE models by link_id or nid
+def university(request, id):
+    uni = UniUni.objects.get(id=id)
 
-    # First check based on link_id
-    qs_uni = QS_University.objects.filter(link_id=nid).first()
-    the_uni = THE_University.objects.filter(link_id=nid).first()
+    if not uni.the_title and not uni.qs_title:
+        title = uni.kz_title
+    elif not uni.the_title and uni.qs_title:
+        title = uni.qs_title
+    elif not uni.qs_title and uni.the_title:
+        title = uni.the_title
+    elif uni.qs_title and uni.the_title:
+        title = uni.qs_title
 
-    if not qs_uni and not the_uni:
-        # If no match by link_id, check by nid
-        qs_uni = QS_University.objects.filter(nid=nid).first()
-        the_uni = THE_University.objects.filter(nid=nid).first()
+    # Fetch scholarships with related academic programs
+    scholarships = Scholarship.objects.filter(university=uni).select_related('academic_program').order_by('academic_program__code')
 
-    # Determine which university to use
-    if qs_uni:
-        uni = qs_uni
-        the_rank = THE_University.objects.filter(link_id=qs_uni.link_id).first().rank if qs_uni.link_id else None
-    elif the_uni:
-        uni = the_uni
-        the_rank = the_uni.rank
-    else:
-        # If neither QS nor THE university exists, return a 404 page
-        return render(request, "404.html", {"message": "University not found"})
+    # Group scholarships by year
+    scholarships_by_year = {}
+    for scholarship in scholarships:
+        if scholarship.year not in scholarships_by_year:
+            scholarships_by_year[scholarship.year] = []
+        scholarships_by_year[scholarship.year].append(scholarship)
 
-    # Render the university page with the details
+    # Fetch QS rankings
+    qs_rankings = [
+        {'rank': uni.qs_rank_arts_humanities, 'subject': 'Arts & Humanities'},
+        {'rank': uni.qs_rank_comp_sci, 'subject': 'Computer Science'},
+        {'rank': uni.qs_rank_eng_tech, 'subject': 'Engineering & Technology'},
+        {'rank': uni.qs_rank_nat_sci, 'subject': 'Natural Sciences'},
+        {'rank': uni.qs_rank_life_sci, 'subject': 'Life Sciences & Medicine'},
+        {'rank': uni.qs_rank_linguistics, 'subject': 'Linguistics'},
+        {'rank': uni.qs_rank_music, 'subject': 'Music'},
+        {'rank': uni.qs_rank_theology, 'subject': 'Theology, Divinity & Religious Studies'},
+        {'rank': uni.qs_rank_archaeology, 'subject': 'Archaeology'},
+        {'rank': uni.qs_rank_architecture, 'subject': 'Architecture & Built Environment'},
+        {'rank': uni.qs_rank_classics, 'subject': 'Classics & Ancient History'},
+        {'rank': uni.qs_rank_art_design, 'subject': 'Art & Design'},
+        {'rank': uni.qs_rank_english, 'subject': 'English Language and Literature'},
+        {'rank': uni.qs_rank_history, 'subject': 'History'},
+        {'rank': uni.qs_rank_art_history, 'subject': 'History of Art'},
+        {'rank': uni.qs_rank_modern_languages, 'subject': 'Modern Languages'},
+        {'rank': uni.qs_rank_performing_arts, 'subject': 'Performing Arts'},
+        {'rank': uni.qs_rank_philosophy, 'subject': 'Philosophy'},
+        {'rank': uni.qs_rank_chem_eng, 'subject': 'Chemical Engineering'},
+        {'rank': uni.qs_rank_civil_eng, 'subject': 'Civil Engineering'},
+        {'rank': uni.qs_rank_data_sci, 'subject': 'Data Science'},
+        {'rank': uni.qs_rank_elec_eng, 'subject': 'Electrical Engineering'},
+        {'rank': uni.qs_rank_pet_eng, 'subject': 'Petroleum Engineering'},
+        {'rank': uni.qs_rank_mech_eng, 'subject': 'Mechanical Engineering'},
+        {'rank': uni.qs_rank_mining_eng, 'subject': 'Mining Engineering'},
+        {'rank': uni.qs_rank_chemistry, 'subject': 'Chemistry'},
+        {'rank': uni.qs_rank_earth_marine_sci, 'subject': 'Earth & Marine Sciences'},
+        {'rank': uni.qs_rank_env_sci, 'subject': 'Environmental Sciences'},
+        {'rank': uni.qs_rank_geography, 'subject': 'Geography'},
+        {'rank': uni.qs_rank_geology, 'subject': 'Geology'},
+        {'rank': uni.qs_rank_geophysics, 'subject': 'Geophysics'},
+        {'rank': uni.qs_rank_materials_sci, 'subject': 'Materials Science'},
+        {'rank': uni.qs_rank_math, 'subject': 'Mathematics'},
+        {'rank': uni.qs_rank_physics_astronomy, 'subject': 'Physics & Astronomy'},
+        {'rank': uni.qs_rank_agriculture, 'subject': 'Agriculture'},
+        {'rank': uni.qs_rank_anatomy, 'subject': 'Anatomy'},
+        {'rank': uni.qs_rank_bio_sci, 'subject': 'Biological Sciences'},
+        {'rank': uni.qs_rank_dentistry, 'subject': 'Dentistry'},
+        {'rank': uni.qs_rank_medicine, 'subject': 'Medicine'},
+        {'rank': uni.qs_rank_pharmacy, 'subject': 'Pharmacy'},
+        {'rank': uni.qs_rank_nursing, 'subject': 'Nursing'},
+        {'rank': uni.qs_rank_psychology, 'subject': 'Psychology'},
+        {'rank': uni.qs_rank_vet_sci, 'subject': 'Veterinary Science'},
+    ]
+
+    # Fetch THE rankings
+    the_rankings = [
+        {'rank': uni.the_rank_arts, 'subject': 'Arts & Humanities'},
+        {'rank': uni.the_rank_comp, 'subject': 'Computer Science'},
+        {'rank': uni.the_rank_eng, 'subject': 'Engineering & Technology'},
+        {'rank': uni.the_rank_phys, 'subject': 'Physical Sciences'},
+        {'rank': uni.the_rank_life, 'subject': 'Life Sciences'},
+        {'rank': uni.the_rank_bus, 'subject': 'Buiseness & Economics'},
+        {'rank': uni.the_rank_law, 'subject': 'Law'},
+        {'rank': uni.the_rank_clin, 'subject': 'Clinical, Pre-Clinical & Health'},
+        {'rank': uni.the_rank_edu, 'subject': 'Education'},
+        {'rank': uni.the_rank_psych, 'subject': 'Psychology'},
+
+    ]
+
+    # Filter out entries with empty or None rankings
+    qs_rankings = [ranking for ranking in qs_rankings if ranking['rank']]
+    the_rankings = [ranking for ranking in the_rankings if ranking['rank']]
+
     return render(request, "unicompass_app/unipage.html", {
         "uni": uni,
-        "the_rank": the_rank,
+        "title": title,
+        "scholarships_by_year": scholarships_by_year,
+        "qs_rankings": qs_rankings,
+        "the_rankings": the_rankings,
     })
 
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
+def chat_view(request):
+    if request.method == 'POST':
+        try:
+            # Parse the request body
+            data = json.loads(request.body)
+            prompt = data.get('prompt')
+
+            # Check if prompt is None
+            if prompt is None:
+                return JsonResponse({'error': 'Prompt is required'}, status=400)
+
+            # Prepare request to OpenAI API
+            headers = {
+                'Authorization': f'Bearer {OPENAI_API_KEY}',
+                'Content-Type': 'application/json',
+            }
+
+            body = {
+                'model': 'gpt-3.5-turbo',
+                'messages': [{'role': 'user', 'content': prompt}],
+            }
+
+            # Send request to OpenAI API
+            openai_response = requests.post(
+                'https://api.openai.com/v1/chat/completions',
+                headers=headers,
+                json=body
+            )
+
+            # Extract response from OpenAI API
+            if openai_response.status_code == 200:
+                response_data = openai_response.json()
+                bot_response = response_data['choices'][0]['message']['content']
+                return JsonResponse({'response': bot_response}, status=200)
+            else:
+                logger.error(f"OpenAI API response: {openai_response.status_code} {openai_response.text}")
+                return JsonResponse({'error': 'Failed to get response from OpenAI'}, status=500)
+
+        except Exception as e:
+            logger.exception("An error occurred in chat_view")
+            return JsonResponse({'error': str(e)}, status=500)
+
+    # For non-POST requests
+    return JsonResponse({'error': 'Invalid request method'}, status=400)
 def login_view(request):
     if request.method == "POST":
 

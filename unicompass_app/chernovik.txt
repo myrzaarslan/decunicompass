@@ -1,0 +1,13 @@
+    let longitude = 71.398570871052
+    let latitude = 51.09034852272567
+    // Initialize the 2GIS MapGL API
+    const staticMap = new mapgl.Map('staticMap', {
+        center: [longitude, latitude], // Set the coordinates of the university
+        zoom: 16, // Set the desired zoom level
+        key: '30d26425-fcaa-4926-bcf9-cf725a976d8b' // Replace with your API key
+    });
+    
+    // Add a marker at the university location
+    const marker = new mapgl.Marker(map, {
+        coordinates: [longitude, latitude]
+    });
